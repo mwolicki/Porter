@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{995FF359-0B67-46F0-AB10-E0A06419D483}</ProjectGuid>
+    <ProjectGuid>{2D5C00C1-52CA-4DBD-9208-548967342B65}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Porter</RootNamespace>
-    <AssemblyName>Porter</AssemblyName>
+    <RootNamespace>PorterApp.UnitTests</RootNamespace>
+    <AssemblyName>PorterApp.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>d53edcec</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,9 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Diagnostics.Runtime">
-      <HintPath>..\packages\Microsoft.Diagnostics.Runtime.0.8.25-beta\lib\net40\Microsoft.Diagnostics.Runtime.dll</HintPath>
-    </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,24 +41,22 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="xunit">
+      <HintPath>..\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Architecture.cs" />
-    <Compile Include="ClrData.cs" />
-    <Compile Include="ExtendedDebugger.cs" />
-    <Compile Include="Extensions\ClrTypeExtensions.cs" />
-    <Compile Include="IClrData.cs" />
-    <Compile Include="IExtendedDebugger.cs" />
-    <Compile Include="IMultiElementDictionary.cs" />
-    <Compile Include="Models\IReferenceObject.cs" />
-    <Compile Include="Models\ITypeDescription.cs" />
-    <Compile Include="MultiElementDictionary.cs" />
+    <Compile Include="SizeValueConverterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\ReferenceObject.cs" />
-    <Compile Include="Models\TypeDescription.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PorterApp\PorterApp.csproj">
+      <Project>{D029CDC8-645E-4C61-AA5C-EF6B3DAF5049}</Project>
+      <Name>PorterApp</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Diagnostics.Runtime;
+using Porter.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,23 +8,34 @@ namespace Porter.Extensions
 {
 	internal static class ClrTypeExtensions
 	{
-		public static Func<ReferenceObject> GetReferenceObjectFactory(this ClrType type, ulong objRef)
+		public static Func<IReferenceObject> GetReferenceObjectFactory(this ClrType type, ulong objRef)
 		{
-			return () => new ReferenceObject(objRef, type.GetTypeObjectDescription(), type.GetObjectFieldsReferences(objRef));
+			return () => new ReferenceObject
+			{
+				Size = type.GetSize(objRef),
+				Fields = type.GetObjectFieldsReferences(objRef),
+				TypeObjectDescription = type.GetTypeObjectDescription(),
+				Type = objRef
+			};
 		}
 
-		private static TypeDescription GetTypeObjectDescription(this ClrType type)
+		private static ITypeDescription GetTypeObjectDescription(this ClrType type)
 		{
 			IEnumerable<string> methods = type.Methods.Select(m => m.Name);
 
-			var typeObjectDescription = new TypeDescription(type.Name, type.Fields.Select(f => f.Name), methods);
+			var typeObjectDescription = new TypeDescription
+			{
+				Fields = type.Fields.Select(f => f.Name),
+				Name = type.Name,
+				Methods = methods
+			};
 			return typeObjectDescription;
 		}
 
-		private static MultiElementDictionary<string, Func<ReferenceObject>> GetObjectFieldsReferences(this ClrType type,
+		private static IMultiElementDictionary<string, Func<IReferenceObject>> GetObjectFieldsReferences(this ClrType type,
 			ulong objRef)
 		{
-			var objectFields = new MultiElementDictionary<string, Func<ReferenceObject>>();
+			var objectFields = new MultiElementDictionary<string, Func<IReferenceObject>>();
 			foreach (string field in type.Fields.Select(f => f.Name))
 			{
 				var fieldRef = type.GetFieldByName(field);

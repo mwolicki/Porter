@@ -1,5 +1,6 @@
 ﻿using Microsoft.Diagnostics.Runtime;
 using Porter.Extensions;
+using Porter.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace Porter
 			get { return _clrHeap ?? (_clrHeap = _clrRuntime.GetHeap()); }
 		}
 
-		public IEnumerable<Func<ReferenceObject>> GetHeapObjects()
+		public IEnumerable<Func<IReferenceObject>> GetHeapObjects()
 		{
 			return from objRef in ClrHeap.EnumerateObjects()
 				   let type = ClrHeap.GetObjectType(objRef)

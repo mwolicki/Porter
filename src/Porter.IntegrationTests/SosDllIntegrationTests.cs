@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
 using Xunit;
 
@@ -31,7 +30,7 @@ namespace Porter.IntegrationTests
 		[Fact]
 		public void TestReferenceToObject_CanNavigateToNextObject()
 		{
-			Func<ReferenceObject> examplePublicClassFactory = _clrData.GetHeapObjects().FirstOrDefault(p => p().TypeObjectDescription.Name.Contains("ExamplePublicClass"));
+			var examplePublicClassFactory = _clrData.GetHeapObjects().FirstOrDefault(p => p().TypeObjectDescription.Name.Contains("ExamplePublicClass"));
 			Debug.Assert(examplePublicClassFactory != null, "examplePublicClassFactory != null");
 			var field = examplePublicClassFactory().Fields["<Name>k__BackingField"];
 			Assert.NotNull(field());

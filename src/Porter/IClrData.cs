@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Porter.Models;
+using System;
 using System.Collections.Generic;
 
 namespace Porter
 {
 	public interface IClrData
 	{
-		IEnumerable<Func<ReferenceObject>> GetHeapObjects();
+		IEnumerable<Func<IReferenceObject>> GetHeapObjects();
 	}
 }

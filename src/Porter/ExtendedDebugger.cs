@@ -1,12 +1,24 @@
 ﻿using Microsoft.Diagnostics.Runtime;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using RuntimeArchitecture = Microsoft.Diagnostics.Runtime.Architecture;
 
 namespace Porter
 {
-	public sealed class ExtendedDebugger : IDisposable
+	public interface IExtendedDebuggerFactory
+	{
+		IExtendedDebugger Create(string dumpFilePath);
+	}
+
+	public class ExtendedDebuggerFactory : IExtendedDebuggerFactory
+	{
+		public IExtendedDebugger Create(string dumpFilePath)
+		{
+			return new ExtendedDebugger(dumpFilePath);
+		}
+	}
+
+	internal sealed class ExtendedDebugger : IExtendedDebugger
 	{
 		private readonly DataTarget _dump;
 

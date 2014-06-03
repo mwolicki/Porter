@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Porter
 {
-	public sealed class MultiElementDictionary<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>
+	internal sealed class MultiElementDictionary<TKey, TValue> : IMultiElementDictionary<TKey, TValue>
 	{
 		private readonly Dictionary<TKey, LinkedList<TValue>> _elements = new Dictionary<TKey, LinkedList<TValue>>();
 
