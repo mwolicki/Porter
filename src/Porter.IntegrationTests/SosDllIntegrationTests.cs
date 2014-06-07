@@ -22,16 +22,9 @@ namespace Porter.IntegrationTests
 
 		public SosDllIntegrationTests()
 		{
-			
-
 			_debugger = new ExtendedDebugger(Path.GetTempPath() + _dumpFileName);
 			_clrData = _debugger.GetClrs().Single();
 		}
-
-		private readonly ExtendedDebugger _debugger;
-
-		private readonly IClrData _clrData;
-		private static string _dumpFileName = @"ExampleConsoleApp.vshost.dmp";
 
 		[Fact]
 		public void TestGetArchitecture()
@@ -53,5 +46,10 @@ namespace Porter.IntegrationTests
 			var field = examplePublicClassFactory().Fields["<Name>k__BackingField"];
 			Assert.NotNull(field());
 		}
+
+		private readonly ExtendedDebugger _debugger;
+
+		private readonly IClrData _clrData;
+		private const string _dumpFileName = @"ExampleConsoleApp.vshost.dmp";
 	}
 }
