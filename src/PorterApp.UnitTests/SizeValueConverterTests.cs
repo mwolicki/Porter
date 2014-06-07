@@ -1,5 +1,10 @@
 ﻿using Porter;
+using System;
+using System.Collections.ObjectModel;
 using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Threading;
 using Xunit;
 
 namespace PorterApp.UnitTests
@@ -31,38 +36,6 @@ namespace PorterApp.UnitTests
 
 			var convert = converter.Convert(value, typeof(string), null, CultureInfo.InvariantCulture);
 			return convert;
-		}
-	}
-
-	public sealed class ChooseFileCommandTests
-	{
-		[Fact]
-		public void Execute_NotSelectedFile_DoNothing()
-		{
-			var extendedDebuggerFactorySpy = new ExtendedDebuggerFactorySpy();
-			var chooseFileCommand = new ChooseFileCommand(() => extendedDebuggerFactorySpy, () => new OpenDumpFileDialogDummy());
-			chooseFileCommand.Execute(null);
-			Assert.False(extendedDebuggerFactorySpy.Executed);
-		}
-	}
-
-	public class ExtendedDebuggerFactorySpy : IExtendedDebuggerFactory
-	{
-		public bool Executed { get; private set; }
-
-		public IExtendedDebugger Create(string dumpFilePath)
-		{
-			Executed = true;
-			return null;
-		}
-	}
-
-	public class OpenDumpFileDialogDummy : IOpenFileDialog
-	{
-		public bool TryGetFileName(out string fileName)
-		{
-			fileName = null;
-			return false;
 		}
 	}
 }

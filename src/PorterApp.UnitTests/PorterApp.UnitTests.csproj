@@ -46,6 +46,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChooseFileCommandTests\ChooseFileCanceled.cs" />
+    <Compile Include="ChooseFileCommandTests\ChooseFileCommandTestsBase.cs" />
+    <Compile Include="ChooseFileCommandTests\ChosenFile.cs" />
+    <Compile Include="ChooseFileCommandTests\DumpFileNotFoundAlertSpy.cs" />
+    <Compile Include="ChooseFileCommandTests\ExtendedDebuggerFactorySpy.cs" />
+    <Compile Include="ChooseFileCommandTests\FileNotFound.cs" />
+    <Compile Include="ChooseFileCommandTests\FileNotFoundExtendedDebugger.cs" />
+    <Compile Include="ChooseFileCommandTests\HeapObjectListSpy.cs" />
+    <Compile Include="ChooseFileCommandTests\LoadObjectToList.cs" />
+    <Compile Include="ChooseFileCommandTests\NotEmptyDebuggerStub.cs" />
+    <Compile Include="ChooseFileCommandTests\OpenDumpFileDialogStub.cs" />
     <Compile Include="SizeValueConverterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -56,6 +67,10 @@
     <ProjectReference Include="..\PorterApp\PorterApp.csproj">
       <Project>{D029CDC8-645E-4C61-AA5C-EF6B3DAF5049}</Project>
       <Name>PorterApp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Porter\Porter.csproj">
+      <Project>{995FF359-0B67-46F0-AB10-E0A06419D483}</Project>
+      <Name>Porter</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
