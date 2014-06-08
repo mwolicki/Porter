@@ -10,7 +10,7 @@ namespace Porter
 		IExtendedDebugger Create(string dumpFilePath);
 	}
 
-	public class ExtendedDebuggerFactory : IExtendedDebuggerFactory
+	public sealed class ExtendedDebuggerFactory : IExtendedDebuggerFactory
 	{
 		public IExtendedDebugger Create(string dumpFilePath)
 		{

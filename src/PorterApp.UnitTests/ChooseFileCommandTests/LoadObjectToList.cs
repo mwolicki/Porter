@@ -6,7 +6,7 @@ using Xunit;
 
 namespace PorterApp.UnitTests.ChooseFileCommandTests
 {
-	public class LoadObjectToList : ChosenFile
+	public sealed class LoadObjectToList : ChosenFile
 	{
 		[Fact]
 		public void Execute_SelectedFile_ObjectsLoaded()
@@ -23,7 +23,7 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 			{
 				new ObjectViewModel { Name = "a", Size = 1 },
 				new ObjectViewModel { Name = "b", Size = 2 },
-				new ObjectViewModel { Name = "c", Size = 3 },
+				new ObjectViewModel { Name = "c", Size = 3 }
 			});
 
 			var chooseFileCommand = GetChooseFileCommand();
@@ -38,7 +38,7 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 			{
 				new ObjectViewModel { Name = "a", Size = 1 },
 				new ObjectViewModel { Name = "b", Size = 2 },
-				new ObjectViewModel { Name = "c", Size = 3 },
+				new ObjectViewModel { Name = "c", Size = 3 }
 			});
 
 			var chooseFileCommand = GetChooseFileCommand();
@@ -56,7 +56,7 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 		}
 	}
 
-	public class DelegateComparer<T> : IEqualityComparer<T>
+	public sealed class DelegateComparer<T> : IEqualityComparer<T>
 	{
 		private readonly Func<T, T, bool> _isEqual;
 

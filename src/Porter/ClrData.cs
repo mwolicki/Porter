@@ -25,8 +25,8 @@ namespace Porter
 		public IEnumerable<Func<IReferenceObject>> GetHeapObjects()
 		{
 			return from objRef in ClrHeap.EnumerateObjects()
-				   let type = ClrHeap.GetObjectType(objRef)
-				   select type.GetReferenceObjectFactory(objRef);
+					let type = ClrHeap.GetObjectType(objRef)
+					select type.GetReferenceObjectFactory(objRef);
 		}
 	}
 }

@@ -23,7 +23,7 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 		{
 		}
 
-		private class ClrData : IClrData
+		private sealed class ClrData : IClrData
 		{
 			private readonly IEnumerable<Func<IReferenceObject>> _heapObjects;
 

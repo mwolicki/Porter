@@ -23,4 +23,5 @@
   <MSTestThreadApartmentState>STA</MSTestThreadApartmentState>
   <BuildProcessArchitecture>x86</BuildProcessArchitecture>
   <AdditionalFilesToInclude>ExampleDumps\ExampleConsoleApp.vshost.dmp</AdditionalFilesToInclude>
+  <HiddenWarnings>UnnecessaryFileIncludeWarning</HiddenWarnings>
 </ProjectConfiguration>

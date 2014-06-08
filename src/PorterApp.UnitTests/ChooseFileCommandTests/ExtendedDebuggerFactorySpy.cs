@@ -1,5 +1,4 @@
 using Porter;
-using System.Windows.Documents;
 
 namespace PorterApp.UnitTests.ChooseFileCommandTests
 {

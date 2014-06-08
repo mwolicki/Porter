@@ -19,7 +19,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -67,10 +67,12 @@
     <ProjectReference Include="..\PorterApp\PorterApp.csproj">
       <Project>{D029CDC8-645E-4C61-AA5C-EF6B3DAF5049}</Project>
       <Name>PorterApp</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Porter\Porter.csproj">
       <Project>{995FF359-0B67-46F0-AB10-E0A06419D483}</Project>
       <Name>Porter</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -7,6 +7,5 @@ namespace Porter
 	{
 		Architecture Architecture { get; }
 		IEnumerable<IClrData> GetClrs();
-		void Dispose();
 	}
 }
