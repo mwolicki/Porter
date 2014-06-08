@@ -5,19 +5,6 @@ using RuntimeArchitecture = Microsoft.Diagnostics.Runtime.Architecture;
 
 namespace Porter
 {
-	public interface IExtendedDebuggerFactory
-	{
-		IExtendedDebugger Create(string dumpFilePath);
-	}
-
-	public sealed class ExtendedDebuggerFactory : IExtendedDebuggerFactory
-	{
-		public IExtendedDebugger Create(string dumpFilePath)
-		{
-			return new ExtendedDebugger(dumpFilePath);
-		}
-	}
-
 	internal sealed class ExtendedDebugger : IExtendedDebugger
 	{
 		private readonly DataTarget _dump;

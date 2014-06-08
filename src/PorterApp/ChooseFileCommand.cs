@@ -8,11 +8,6 @@ using System.Windows.Input;
 
 namespace PorterApp
 {
-	public interface IDumpFileNotFoundAlert
-	{
-		void Display(string filePath);
-	}
-
 	internal sealed class ChooseFileCommand : ICommand
 	{
 		private readonly Func<IExtendedDebuggerFactory> _extendedDebugger;

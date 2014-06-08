@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Xunit;
@@ -53,26 +51,6 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 			var chooseFileCommand = GetChooseFileCommand(expectedFileName);
 			chooseFileCommand.Execute(HeapObjectListSpy);
 			Assert.Equal(expectedFileName, ExtendedDebuggerFactorySpy.FilePath);
-		}
-	}
-
-	public sealed class DelegateComparer<T> : IEqualityComparer<T>
-	{
-		private readonly Func<T, T, bool> _isEqual;
-
-		public DelegateComparer(Func<T, T, bool> isEqual)
-		{
-			_isEqual = isEqual;
-		}
-
-		public bool Equals(T x, T y)
-		{
-			return _isEqual(x, y);
-		}
-
-		public int GetHashCode(T obj)
-		{
-			return 0;
 		}
 	}
 }

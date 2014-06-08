@@ -47,9 +47,11 @@
     <Compile Include="Architecture.cs" />
     <Compile Include="ClrData.cs" />
     <Compile Include="ExtendedDebugger.cs" />
+    <Compile Include="ExtendedDebuggerFactory.cs" />
     <Compile Include="Extensions\ClrTypeExtensions.cs" />
     <Compile Include="IClrData.cs" />
     <Compile Include="IExtendedDebugger.cs" />
+    <Compile Include="IExtendedDebuggerFactory.cs" />
     <Compile Include="IMultiElementDictionary.cs" />
     <Compile Include="Models\IReferenceObject.cs" />
     <Compile Include="Models\ITypeDescription.cs" />

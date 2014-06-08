@@ -49,6 +49,7 @@
     <Compile Include="ChooseFileCommandTests\ChooseFileCanceled.cs" />
     <Compile Include="ChooseFileCommandTests\ChooseFileCommandTestsBase.cs" />
     <Compile Include="ChooseFileCommandTests\ChosenFile.cs" />
+    <Compile Include="ChooseFileCommandTests\DelegateComparer.cs" />
     <Compile Include="ChooseFileCommandTests\DumpFileNotFoundAlertSpy.cs" />
     <Compile Include="ChooseFileCommandTests\ExtendedDebuggerFactorySpy.cs" />
     <Compile Include="ChooseFileCommandTests\FileNotFound.cs" />
