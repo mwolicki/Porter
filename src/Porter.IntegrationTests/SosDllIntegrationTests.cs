@@ -15,8 +15,10 @@ namespace Porter.IntegrationTests
 		{
 			if (!File.Exists(Path.GetTempPath() + _dumpFileName))
 			{
-				IArchive archive = ArchiveFactory.Open("ExampleDumps/ExampleConsoleApp.vshost.7z");
-				archive.WriteToDirectory(Path.GetTempPath() , ExtractOptions.Overwrite);
+				using (IArchive archive = ArchiveFactory.Open("ExampleDumps/ExampleConsoleApp.vshost.7z"))
+				{
+					archive.WriteToDirectory(Path.GetTempPath(), ExtractOptions.Overwrite);
+				}
 			}
 		}
 
