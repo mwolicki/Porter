@@ -4,7 +4,7 @@ namespace Porter.Models
 {
 	public interface IReferenceObject
 	{
-		ulong Type { get; }
+		ulong ObjectRef { get; }
 
 		ITypeDescription TypeObjectDescription { get; }
 

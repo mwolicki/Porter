@@ -4,7 +4,7 @@ namespace Porter.Models
 {
 	internal sealed class ReferenceObject : IReferenceObject
 	{
-		public ulong Type { get; set; }
+		public ulong ObjectRef { get; set; }
 
 		public ITypeDescription TypeObjectDescription { get; set; }
 

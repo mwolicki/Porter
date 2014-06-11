@@ -15,7 +15,7 @@ namespace Porter.Extensions
 				Size = type.GetSize(objRef),
 				Fields = type.GetObjectFieldsReferences(objRef),
 				TypeObjectDescription = type.GetTypeObjectDescription(),
-				Type = objRef
+				ObjectRef = objRef,
 			};
 		}
 

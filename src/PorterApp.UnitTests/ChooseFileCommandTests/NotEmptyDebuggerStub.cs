@@ -15,20 +15,20 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 			{
 				return new[]
 				{
-					new ObjectViewModel {Name = "a", Size = 1},
-					new ObjectViewModel {Name = "b", Size = 2},
-					new ObjectViewModel {Name = "c", Size = 3}
+					new ObjectViewModel {Name = "a", Size = 1, ObjectRef = 4},
+					new ObjectViewModel {Name = "b", Size = 2, ObjectRef = 5},
+					new ObjectViewModel {Name = "c", Size = 3, ObjectRef = 6}
 				};
 			}
 		}
 
 		public IEnumerable<IClrData> GetClrs()
 		{
-			Func<string, ulong, Func<IReferenceObject>> refObj = (name, size) => (() => new ReferenceObject(name, size));
+			Func<string, ulong, ulong, Func<IReferenceObject>> refObj = (name, size, objectRef) => (() => new ReferenceObject(name, size, objectRef));
 			return new List<IClrData>
 			{
-				new ClrData(new[] { refObj("a", 1), refObj("b", 2) }),
-				new ClrData(new[] { refObj("c", 3) })
+				new ClrData(new[] { refObj("a", 1, 4), refObj("b", 2, 5) }),
+				new ClrData(new[] { refObj("c", 3, 6) })
 			};
 		}
 
@@ -53,7 +53,7 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 
 		private sealed class ReferenceObject : IReferenceObject
 		{
-			public ulong Type { get; private set; }
+			public ulong ObjectRef { get; private set; }
 
 			public ITypeDescription TypeObjectDescription { get; private set; }
 
@@ -61,10 +61,11 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 
 			public ulong Size { get; private set; }
 
-			public ReferenceObject(string typeName, ulong size)
+			public ReferenceObject(string typeName, ulong size, ulong objectRef)
 			{
 				TypeObjectDescription = new TypeDescription { Name = typeName };
 				Size = size;
+				ObjectRef = objectRef;
 			}
 		}
 

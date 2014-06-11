@@ -12,7 +12,8 @@ namespace PorterApp.Extensions
 			objectViewModels.Add(new ObjectViewModel
 			{
 				Name = referenceObject.TypeObjectDescription.Name,
-				Size = referenceObject.Size
+				Size = referenceObject.Size,
+				ObjectRef = referenceObject.ObjectRef
 			});
 		}
 	}

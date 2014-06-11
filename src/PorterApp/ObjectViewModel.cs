@@ -26,5 +26,7 @@
 				OnPropertyChanged();
 			}
 		}
+
+		public ulong ObjectRef { get; set; }
 	}
 }

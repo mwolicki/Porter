@@ -13,17 +13,13 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 		}
 
 		[Fact]
-		public void Execute_SelectedFile_ObjectsHaveCorrectNames()
+		public void Execute_SelectedFile_ObjectsAreCorrectlyPopulated()
 		{
-			InvokeExecute();
-			Assert.Equal(NotEmptyDebuggerStub.ExpectedObjectViewModels, HeapObjectListSpy.Objects, new DelegateComparer<ObjectViewModel>((a, b) => a.Name == b.Name));
-		}
+			var comparer = new DelegateComparer<ObjectViewModel>((a, b) => a.Name == b.Name && a.ObjectRef == b.ObjectRef && a.Size == b.Size);
 
-		[Fact]
-		public void Execute_SelectedFile_ObjectsHaveCorrectSize()
-		{
 			InvokeExecute();
-			Assert.Equal(NotEmptyDebuggerStub.ExpectedObjectViewModels, HeapObjectListSpy.Objects, new DelegateComparer<ObjectViewModel>((a, b) => a.Size == b.Size));
+
+			Assert.Equal(NotEmptyDebuggerStub.ExpectedObjectViewModels, HeapObjectListSpy.Objects, comparer);
 		}
 
 		private void InvokeExecute()

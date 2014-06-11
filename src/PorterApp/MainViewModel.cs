@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 
@@ -24,6 +25,40 @@ namespace PorterApp
 			}
 		}
 
+		public ICommand OpenObjectViewCommand
+		{
+			get { return new OpenObjectViewCommand(); }
+		}
+
+		public ObjectViewModel SelectedObject { get; set; }
+
 		public override event PropertyChangedEventHandler PropertyChanged;
+	}
+
+	internal class OpenObjectViewCommand : ICommand
+	{
+		public bool CanExecute(object parameter)
+		{
+			return true;
+		}
+
+		public void Execute(object parameter)
+		{
+			var objectDetails = new ObjectDetails
+			{
+				DataContext = new ObjectDetailsViewModel
+				{
+					ObjectRef = ((MainViewModel) parameter).SelectedObject.ObjectRef
+				}
+			};
+			objectDetails.Show();
+		}
+
+		public event EventHandler CanExecuteChanged;
+	}
+
+	internal class ObjectDetailsViewModel
+	{
+		public ulong ObjectRef { get; set; }
 	}
 }
