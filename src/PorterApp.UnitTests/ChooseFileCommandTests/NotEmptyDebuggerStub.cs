@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using Porter;
 using Porter.Models;
 using System;
@@ -8,6 +9,19 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 	public sealed class NotEmptyDebuggerStub : IExtendedDebugger
 	{
 		public Architecture Architecture { get; private set; }
+
+		internal static IEnumerable<ObjectViewModel> ExpectedObjectViewModels
+		{
+			get
+			{
+				return new[]
+				{
+					new ObjectViewModel {Name = "a", Size = 1},
+					new ObjectViewModel {Name = "b", Size = 2},
+					new ObjectViewModel {Name = "c", Size = 3}
+				};
+			}
+		}
 
 		public IEnumerable<IClrData> GetClrs()
 		{
