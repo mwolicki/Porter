@@ -39,5 +39,13 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 			chooseFileCommand.Execute(HeapObjectListSpy);
 			Assert.Equal(expectedFileName, ExtendedDebuggerFactorySpy.FilePath);
 		}
+
+		[Fact]
+		public void Execute_SelectedFile_ClearList()
+		{
+			InvokeExecute();
+			InvokeExecute();
+			Assert.Equal(NotEmptyDebuggerStub.ExpectedObjectViewModels, HeapObjectListSpy.Objects, new DelegateComparer<ObjectViewModel>((a, b) => a.Size == b.Size));
+		}
 	}
 }

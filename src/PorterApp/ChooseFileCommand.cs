@@ -43,6 +43,9 @@ namespace PorterApp
 					try
 					{
 						IExtendedDebugger extendedDebugger = _extendedDebugger().Create(fileName);
+
+						objectViewModels.Clear();
+
 						foreach (var heapObjects in extendedDebugger.GetClrs().SelectMany(p => p.GetHeapObjects()))
 						{
 							IReferenceObject referenceObject = heapObjects();
@@ -60,36 +63,6 @@ namespace PorterApp
 				}
 			}
 		}
-
-		//public void Execute(object parameter)
-		//{
-		//	string fileName;
-		//	if (_openDumpFileFactory().TryGetFileName(out fileName))
-		//	{
-		//		LoadHeapObjects(parameter, fileName);
-		//	}
-		//}
-
-		//private void LoadHeapObjects(object parameter, string fileName)
-		//{
-		//	using (var extendedDebugger = _extendedDebugger().Create(fileName))
-		//	{
-		//		var objects = ((IHeapObjectList)parameter).Objects;
-		//		objects.Clear();
-		//		foreach (var clrData in extendedDebugger.GetClrs())
-		//		{
-		//			foreach (var obj in clrData.GetHeapObjects())
-		//			{
-		//				var o = obj();
-		//				objects.Add(new ObjectViewModel
-		//				{
-		//					Name = o.TypeObjectDescription.Name,
-		//					Size = o.Size
-		//				});
-		//			}
-		//		}
-		//	}
-		//}
 
 		public event EventHandler CanExecuteChanged;
 	}
