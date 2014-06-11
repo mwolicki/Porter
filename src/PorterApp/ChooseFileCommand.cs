@@ -1,10 +1,10 @@
 ﻿using Porter;
-using Porter.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
+using PorterApp.Extensions;
 
 namespace PorterApp
 {
@@ -34,33 +34,40 @@ namespace PorterApp
 
 		public void Execute(object parameter)
 		{
-			if (parameter is IHeapObjectList)
+			var list = parameter as IHeapObjectList;
+			if (list != null)
 			{
-				ObservableCollection<ObjectViewModel> objectViewModels = ((IHeapObjectList)parameter).Objects;
-				string fileName;
-				if (_openDumpFileFactory().TryGetFileName(out fileName))
+				Execute(list);
+			}
+		}
+
+		private void Execute(IHeapObjectList list)
+		{
+			ObservableCollection<ObjectViewModel> objectViewModels = list.Objects;
+
+			string fileName;
+			if (_openDumpFileFactory().TryGetFileName(out fileName))
+			{
+				PopulateObjectList(fileName, objectViewModels);
+			}
+		}
+
+		private void PopulateObjectList(string fileName, ObservableCollection<ObjectViewModel> objectViewModels)
+		{
+			try
+			{
+				IExtendedDebugger extendedDebugger = _extendedDebugger().Create(fileName);
+
+				objectViewModels.Clear();
+
+				foreach (var heapObjects in extendedDebugger.GetClrs().SelectMany(p => p.GetHeapObjects()))
 				{
-					try
-					{
-						IExtendedDebugger extendedDebugger = _extendedDebugger().Create(fileName);
-
-						objectViewModels.Clear();
-
-						foreach (var heapObjects in extendedDebugger.GetClrs().SelectMany(p => p.GetHeapObjects()))
-						{
-							IReferenceObject referenceObject = heapObjects();
-							objectViewModels.Add(new ObjectViewModel
-							{
-								Name = referenceObject.TypeObjectDescription.Name,
-								Size = referenceObject.Size
-							});
-						}
-					}
-					catch (FileNotFoundException)
-					{
-						_alert.Display(fileName);
-					}
+					objectViewModels.AddHeapObject(heapObjects);
 				}
+			}
+			catch (FileNotFoundException)
+			{
+				_alert.Display(fileName);
 			}
 		}
 

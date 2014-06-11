@@ -54,6 +54,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Extensions\ObservableCollectionExtensions.cs" />
     <Compile Include="IDumpFileNotFoundAlert.cs" />
     <Compile Include="IHeapObjectList.cs" />
     <Compile Include="IOpenFileDialog.cs" />
