@@ -1,6 +1,5 @@
 ﻿using SharpCompress.Archive;
 using SharpCompress.Common;
-using SharpCompress.Reader;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
