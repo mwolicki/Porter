@@ -4,7 +4,7 @@ using PorterApp.ViewModel;
 
 namespace PorterApp.Command
 {
-	internal class OpenObjectViewCommand : ICommand
+	internal sealed class OpenObjectViewCommand : ICommand
 	{
 		public bool CanExecute(object parameter)
 		{
@@ -15,10 +15,7 @@ namespace PorterApp.Command
 		{
 			var objectDetails = new ObjectDetails
 			{
-				DataContext = new ObjectDetailsViewModel
-				{
-					ObjectRef = ((MainViewModel) parameter).SelectedObject.ObjectRef
-				}
+				DataContext = new ObjectDetailsViewModel(((MainViewModel)parameter).SelectedObject.ReferenceObject)
 			};
 			objectDetails.Show();
 		}

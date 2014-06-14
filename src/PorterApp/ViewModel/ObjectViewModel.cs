@@ -1,4 +1,6 @@
-﻿namespace PorterApp.ViewModel
+﻿using Porter.Models;
+
+namespace PorterApp.ViewModel
 {
 	internal sealed class ObjectViewModel : NotifyPropertyChange
 	{
@@ -27,6 +29,6 @@
 			}
 		}
 
-		public ulong ObjectRef { get; set; }
+		public IReferenceObject ReferenceObject { get; set; }
 	}
 }

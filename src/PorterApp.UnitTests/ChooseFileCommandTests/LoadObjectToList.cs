@@ -16,7 +16,7 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 		[Fact]
 		public void Execute_SelectedFile_ObjectsAreCorrectlyPopulated()
 		{
-			var comparer = new DelegateComparer<ObjectViewModel>((a, b) => a.Name == b.Name && a.ObjectRef == b.ObjectRef && a.Size == b.Size);
+			var comparer = new DelegateComparer<ObjectViewModel>((a, b) => a.Name == b.Name && a.Size == b.Size);
 
 			InvokeExecute();
 

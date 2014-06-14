@@ -16,9 +16,9 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 			{
 				return new[]
 				{
-					new ObjectViewModel {Name = "a", Size = 1, ObjectRef = 4},
-					new ObjectViewModel {Name = "b", Size = 2, ObjectRef = 5},
-					new ObjectViewModel {Name = "c", Size = 3, ObjectRef = 6}
+					new ObjectViewModel {Name = "a", Size = 1},
+					new ObjectViewModel {Name = "b", Size = 2},
+					new ObjectViewModel {Name = "c", Size = 3}
 				};
 			}
 		}

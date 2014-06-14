@@ -14,7 +14,8 @@ namespace PorterApp.Extensions
 			{
 				Name = referenceObject.TypeObjectDescription.Name,
 				Size = referenceObject.Size,
-				ObjectRef = referenceObject.ObjectRef
+				ReferenceObject = referenceObject
+
 			});
 		}
 	}
