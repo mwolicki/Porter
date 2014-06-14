@@ -1,4 +1,5 @@
 using System.Linq;
+using PorterApp.ViewModel;
 using Xunit;
 
 namespace PorterApp.UnitTests.ChooseFileCommandTests

@@ -1,4 +1,4 @@
-﻿namespace PorterApp
+﻿namespace PorterApp.ViewModel
 {
 	internal sealed class ObjectViewModel : NotifyPropertyChange
 	{

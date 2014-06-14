@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Windows.Input;
+using PorterApp.ViewModel;
 
-namespace PorterApp
+namespace PorterApp.Command
 {
 	internal class OpenObjectViewCommand : ICommand
 	{

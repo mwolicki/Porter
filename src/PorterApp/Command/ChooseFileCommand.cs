@@ -1,12 +1,13 @@
-﻿using Porter;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
+using Porter;
 using PorterApp.Extensions;
+using PorterApp.ViewModel;
 
-namespace PorterApp
+namespace PorterApp.Command
 {
 	internal sealed class ChooseFileCommand : ICommand
 	{

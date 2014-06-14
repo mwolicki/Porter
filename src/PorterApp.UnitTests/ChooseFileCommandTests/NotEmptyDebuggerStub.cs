@@ -2,6 +2,7 @@ using Porter;
 using Porter.Models;
 using System;
 using System.Collections.Generic;
+using PorterApp.ViewModel;
 
 namespace PorterApp.UnitTests.ChooseFileCommandTests
 {

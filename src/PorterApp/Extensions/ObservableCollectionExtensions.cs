@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using Porter.Models;
+using PorterApp.ViewModel;
 
 namespace PorterApp.Extensions
 {

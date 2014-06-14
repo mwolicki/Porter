@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using PorterApp.ViewModel;
 
 namespace PorterApp.UnitTests.ChooseFileCommandTests
 {
