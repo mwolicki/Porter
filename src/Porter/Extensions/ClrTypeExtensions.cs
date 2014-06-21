@@ -1,4 +1,5 @@
-﻿using Microsoft.Diagnostics.Runtime;
+﻿using System.Linq.Expressions;
+using Microsoft.Diagnostics.Runtime;
 using Porter.Models;
 using System;
 using System.Collections.Generic;
@@ -10,12 +11,22 @@ namespace Porter.Extensions
 	{
 		public static Func<IReferenceObject> GetReferenceObjectFactory(this ClrType type, ulong objRef)
 		{
-			return () => new ReferenceObject
+
+			//var t = type.GetFieldByName("X");
+			return () =>
 			{
-				Size = type.GetSize(objRef),
-				Fields = type.GetObjectFieldsReferences(objRef),
-				TypeObjectDescription = type.GetTypeObjectDescription(),
-				ObjectRef = objRef,
+				string value;
+				if (type.IsPrimitive && type.HasSimpleValue)
+					value = type.GetValue(objRef).ToString();
+				else value = "";
+				return new ReferenceObject
+				             {
+					             Size = type.GetSize(objRef),
+					             Fields = type.GetObjectFieldsReferences(objRef),
+					             TypeObjectDescription = type.GetTypeObjectDescription(),
+					             ObjectRef = objRef,
+					             Value = value
+				             };
 			};
 		}
 
@@ -32,16 +43,28 @@ namespace Porter.Extensions
 			return typeObjectDescription;
 		}
 
-		private static IMultiElementDictionary<string, Func<IReferenceObject>> GetObjectFieldsReferences(this ClrType type,
+		private static IMultiElementDictionary<string, Func<IFieldData>> GetObjectFieldsReferences(this ClrType type,
 			ulong objRef)
 		{
-			var objectFields = new MultiElementDictionary<string, Func<IReferenceObject>>();
+			var objectFields = new MultiElementDictionary<string, Func<IFieldData>>();
 			foreach (string field in type.Fields.Select(f => f.Name))
 			{
 				if (!type.IsPrimitive)
 				{
 					var fieldRef = type.GetFieldByName(field);
-					objectFields.Add(field, GetReferenceObjectFactory(fieldRef.Type, fieldRef.GetFieldAddress(objRef)));
+					string fieldName = field;
+					objectFields.Add(field, ()=>
+					{
+						if (fieldRef.IsPrimitive())
+						{
+							object fieldValue = fieldRef.GetFieldValue(objRef, false);
+						}
+						return new FieldData
+						{
+							Name = fieldName,
+							ReferenceObject = GetReferenceObjectFactory(fieldRef.Type, fieldRef.GetFieldAddress(objRef))
+						};
+					});
 				}
 			}
 			return objectFields;

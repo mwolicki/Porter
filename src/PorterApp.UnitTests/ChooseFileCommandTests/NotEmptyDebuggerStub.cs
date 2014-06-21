@@ -58,9 +58,10 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 
 			public ITypeDescription TypeObjectDescription { get; private set; }
 
-			public IMultiElementDictionary<string, Func<IReferenceObject>> Fields { get; private set; }
+			public IMultiElementDictionary<string, Func<IFieldData>> Fields { get; private set; }
 
 			public ulong Size { get; private set; }
+			public string Value { get; set; }
 
 			public ReferenceObject(string typeName, ulong size, ulong objectRef)
 			{

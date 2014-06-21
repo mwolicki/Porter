@@ -53,6 +53,8 @@
     <Compile Include="IExtendedDebugger.cs" />
     <Compile Include="IExtendedDebuggerFactory.cs" />
     <Compile Include="IMultiElementDictionary.cs" />
+    <Compile Include="Models\FieldData.cs" />
+    <Compile Include="Models\IFieldData.cs" />
     <Compile Include="Models\IReferenceObject.cs" />
     <Compile Include="Models\ITypeDescription.cs" />
     <Compile Include="MultiElementDictionary.cs" />

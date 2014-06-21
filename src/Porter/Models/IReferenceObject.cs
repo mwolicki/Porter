@@ -8,8 +8,9 @@ namespace Porter.Models
 
 		ITypeDescription TypeObjectDescription { get; }
 
-		IMultiElementDictionary<string, Func<IReferenceObject>> Fields { get; }
+		IMultiElementDictionary<string, Func<IFieldData>> Fields { get; }
 
 		ulong Size { get; }
+		string Value { get; set; }
 	}
 }

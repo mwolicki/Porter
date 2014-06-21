@@ -38,12 +38,14 @@ namespace PorterApp.ViewModel
 
 	public class DataItem
 	{
-		private IReferenceObject _referenceObject;
+		private readonly IFieldData _fieldData;
+		private readonly IReferenceObject _referenceObject;
 
-		public DataItem(Func<IReferenceObject> value)
+		public DataItem(Func<IFieldData> value)
 		{
-			_referenceObject = value();
-			Name = _referenceObject.TypeObjectDescription.Name;
+			_fieldData = value();
+			_referenceObject = _fieldData.ReferenceObject();
+			Name = _fieldData.Name +" : " +_referenceObject.TypeObjectDescription.Name + " ("+_referenceObject.Value + ")";
 		}
 
 		public string Name
