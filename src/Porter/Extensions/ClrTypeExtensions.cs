@@ -38,8 +38,11 @@ namespace Porter.Extensions
 			var objectFields = new MultiElementDictionary<string, Func<IReferenceObject>>();
 			foreach (string field in type.Fields.Select(f => f.Name))
 			{
-				var fieldRef = type.GetFieldByName(field);
-				objectFields.Add(field, GetReferenceObjectFactory(fieldRef.Type, fieldRef.GetFieldAddress(objRef)));
+				if (!type.IsPrimitive)
+				{
+					var fieldRef = type.GetFieldByName(field);
+					objectFields.Add(field, GetReferenceObjectFactory(fieldRef.Type, fieldRef.GetFieldAddress(objRef)));
+				}
 			}
 			return objectFields;
 		}
