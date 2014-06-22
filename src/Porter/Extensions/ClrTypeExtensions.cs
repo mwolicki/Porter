@@ -9,24 +9,15 @@ namespace Porter.Extensions
 {
 	internal static class ClrTypeExtensions
 	{
-		public static Func<IReferenceObject> GetReferenceObjectFactory(this ClrType type, ulong objRef)
+		public static Func<IReferenceObject> GetReferenceObjectFactory(this ClrType type, ulong objRef, string value = "")
 		{
-
-			//var t = type.GetFieldByName("X");
-			return () =>
+			return () => new ReferenceObject
 			{
-				string value;
-				if (type.IsPrimitive && type.HasSimpleValue)
-					value = type.GetValue(objRef).ToString();
-				else value = "";
-				return new ReferenceObject
-				             {
-					             Size = type.GetSize(objRef),
-					             Fields = type.GetObjectFieldsReferences(objRef),
-					             TypeObjectDescription = type.GetTypeObjectDescription(),
-					             ObjectRef = objRef,
-					             Value = value
-				             };
+				Size = type.GetSize(objRef),
+				Fields = type.GetObjectFieldsReferences(objRef),
+				TypeObjectDescription = type.GetTypeObjectDescription(),
+				ObjectRef = objRef,
+				Value = value
 			};
 		}
 
@@ -47,22 +38,41 @@ namespace Porter.Extensions
 			ulong objRef)
 		{
 			var objectFields = new MultiElementDictionary<string, Func<IFieldData>>();
-			foreach (string field in type.Fields.Select(f => f.Name))
+			if (type.Name == "ConsoleApplication18.Program+Test")
 			{
-				if (!type.IsPrimitive)
+				
+			}
+
+			if (!type.IsPrimitive && !type.IsString)
+			{
+				foreach (string field in type.Fields.Select(f => f.Name))
 				{
+					
 					var fieldRef = type.GetFieldByName(field);
 					string fieldName = field;
-					objectFields.Add(field, ()=>
+					objectFields.Add(field, () =>
 					{
-						if (fieldRef.IsPrimitive())
+						string fieldValue = string.Empty;
+						if (fieldRef.HasSimpleValue)
 						{
-							object fieldValue = fieldRef.GetFieldValue(objRef, false);
+							var f1 = fieldRef.GetFieldValue(objRef, !type.IsObjectReference);
+							if (f1 != null)
+							{
+								fieldValue = f1.ToString();
+							}
 						}
+
+						var address = fieldRef.GetFieldAddress(objRef, !type.IsObjectReference);
+
+						if (fieldRef.IsObjectReference() && fieldRef.ElementType != ClrElementType.String)
+						{
+							address = (ulong)fieldRef.GetFieldValue(objRef);
+						}
+
 						return new FieldData
 						{
 							Name = fieldName,
-							ReferenceObject = GetReferenceObjectFactory(fieldRef.Type, fieldRef.GetFieldAddress(objRef))
+							ReferenceObject = GetReferenceObjectFactory(fieldRef.Type, address, fieldValue)
 						};
 					});
 				}
