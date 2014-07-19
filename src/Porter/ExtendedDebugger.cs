@@ -32,7 +32,7 @@ namespace Porter
 
 		public IEnumerable<IClrData> GetClrs()
 		{
-			return _dump.ClrVersions.Select(clrVersion => new ClrData(_dump.CreateRuntime(clrVersion.TryGetDacLocation())));
+			return _dump.ClrVersions.Select(clrVersion => new ClrData(_dump.CreateRuntime(clrVersion.TryGetDacLocation() ?? clrVersion.TryDownloadDac())));
 		}
 
 		public ExtendedDebugger(string dumpFilePath)

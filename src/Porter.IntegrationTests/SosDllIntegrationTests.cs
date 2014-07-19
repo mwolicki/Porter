@@ -1,4 +1,5 @@
-﻿using SharpCompress.Archive;
+﻿using Microsoft.QualityTools.Testing.Fakes;
+using SharpCompress.Archive;
 using SharpCompress.Common;
 using System.Diagnostics;
 using System.IO;
@@ -9,7 +10,6 @@ namespace Porter.IntegrationTests
 {
 	public sealed class SosDllIntegrationTests
 	{
-
 		static SosDllIntegrationTests()
 		{
 			if (!File.Exists(Path.GetTempPath() + _dumpFileName))

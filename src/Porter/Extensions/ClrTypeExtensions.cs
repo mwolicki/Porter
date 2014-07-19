@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Microsoft.Diagnostics.Runtime;
+﻿using Microsoft.Diagnostics.Runtime;
 using Porter.Models;
 using System;
 using System.Collections.Generic;
@@ -38,10 +37,6 @@ namespace Porter.Extensions
 			ulong objRef, bool isInterior)
 		{
 			var objectFields = new MultiElementDictionary<string, Func<IFieldData>>();
-			if (type.Name == "ConsoleApplication18.Program+Test")
-			{
-				
-			}
 			if (!type.IsPrimitive && !type.IsString)
 			{
 				bool interior = !type.IsObjectReference;
@@ -51,15 +46,11 @@ namespace Porter.Extensions
 					interior = false;
 				}
 
-				foreach (string field in type.Fields.Select(f => f.Name))
+				foreach (var field in type.Fields)
 				{
-					
-					var fieldRef = type.GetFieldByName(field);
-					string fieldName = field;
-					objectFields.Add(field, () =>
-					{
-						return FieldData(type, objRef, fieldRef, interior, fieldName);
-					});
+					string fieldName = field.Name;
+					ClrInstanceField fieldRef = field;
+					objectFields.Add(fieldName, () => FieldData(type, objRef, fieldRef, interior, fieldName));
 				}
 			}
 			return objectFields;
@@ -82,19 +73,23 @@ namespace Porter.Extensions
 
 			ClrType fieldType = fieldRef.Type;
 
-			if (!fieldRef.Type.IsArray)
+
+			if (fieldRef.IsObjectReference() && fieldRef.ElementType != ClrElementType.String)
 			{
-				if (fieldRef.IsObjectReference() && fieldRef.ElementType != ClrElementType.String)
+				address = (ulong)fieldRef.GetFieldValue(objRef);
+				if (address != 0)
 				{
-					address = (ulong) fieldRef.GetFieldValue(objRef);
 					fieldType = type.Heap.GetObjectType(address);
+
+					if (fieldType.HasSimpleValue)
+					{
+						var f1 = fieldType.GetValue(address);
+						if (f1 != null)
+						{
+							fieldValue = f1.ToString();
+						}
+					}
 				}
-			}
-
-
-			if (fieldType == null)
-			{
-				
 			}
 
 			return new FieldData
