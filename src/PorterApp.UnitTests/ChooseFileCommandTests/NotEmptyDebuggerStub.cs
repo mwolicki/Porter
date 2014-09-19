@@ -50,6 +50,11 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 			{
 				return _heapObjects;
 			}
+
+			public IEnumerable<TypeHierarchy> GetTypeHierarchy()
+			{
+				throw new NotImplementedException();
+			}
 		}
 
 		private sealed class ReferenceObject : IReferenceObject

@@ -25,8 +25,31 @@ namespace Porter
 		public IEnumerable<Func<IReferenceObject>> GetHeapObjects()
 		{
 			return from objRef in ClrHeap.EnumerateObjects()
-					let type = ClrHeap.GetObjectType(objRef)
-					select type.GetReferenceObjectFactory(objRef);
+				   let type = ClrHeap.GetObjectType(objRef)
+				   select type.GetReferenceObjectFactory(objRef);
 		}
+
+		public IEnumerable<TypeHierarchy> GetTypeHierarchy()
+		{
+			return from type in ClrHeap.EnumerateTypes()
+				let fullName = type.Name.Contains(".") ? type.Name : "(global namespace)." + type.Name
+				group type by fullName.Split('.').First()
+					into grp
+					   select new TypeHierarchy { Namespace = grp.Key, Elements = () => GetTypeHierarchy(grp, 1) };
+		}
+
+		private IEnumerable<TypeHierarchy> GetTypeHierarchy(IEnumerable<ClrType> grp, int level)
+		{
+			return from type in grp
+				group type by type.Name.Split('.')[level]
+				into grp2
+				select new TypeHierarchy {Namespace = grp2.Key, Elements = () => GetTypeHierarchy(grp2, level + 1)};
+		}
+	}
+
+	public class TypeHierarchy 
+	{
+		public string Namespace { get; set; }
+		public Func<IEnumerable<TypeHierarchy>> Elements { get; set; }
 	}
 }

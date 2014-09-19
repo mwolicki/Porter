@@ -1,4 +1,7 @@
-﻿using Microsoft.QualityTools.Testing.Fakes;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using Microsoft.QualityTools.Testing.Fakes;
 using SharpCompress.Archive;
 using SharpCompress.Common;
 using System.Diagnostics;
@@ -46,6 +49,29 @@ namespace Porter.IntegrationTests
 			Debug.Assert(examplePublicClassFactory != null, "examplePublicClassFactory != null");
 			var field = examplePublicClassFactory().Fields["<Name>k__BackingField"];
 			Assert.NotNull(field());
+		}
+
+		[Fact]
+		public void TestGetFirstLevelOfTypeHierarchy()
+		{
+			var typeHierarchy = _clrData.GetTypeHierarchy().Select(t => t.Namespace).ToArray();
+
+			Assert.Contains("System", typeHierarchy);
+			Assert.Contains("(global namespace)", typeHierarchy);
+			Assert.Contains("MS", typeHierarchy);
+			Assert.Contains("Microsoft", typeHierarchy);
+			Assert.Contains("Windows", typeHierarchy);
+			Assert.Contains("ExampleConsoleApp", typeHierarchy);
+		}
+
+
+		[Fact]
+		public void TestGet2ndLevelOfTypeHierarchy()
+		{
+			var typeHierarchy = _clrData.GetTypeHierarchy().Where(p => p.Namespace == "System")
+				.SelectMany(p =>p.Elements()).Select(p=>p.Namespace).ToArray();
+			Assert.Contains("Object", typeHierarchy);
+			Assert.Contains("String", typeHierarchy);
 		}
 
 		private readonly ExtendedDebugger _debugger;
