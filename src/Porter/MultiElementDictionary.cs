@@ -27,6 +27,12 @@ namespace Porter
 			_elements[key].AddLast(value);
 		}
 
+		//TODO: Change this to return IEnumerable - check if we need current implementation
+		public Dictionary<TKey, LinkedList<TValue>> GetDictionary()
+		{
+			return _elements;
+		}
+
 		public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
 		{
 			return (

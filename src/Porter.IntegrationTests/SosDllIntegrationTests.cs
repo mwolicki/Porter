@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.QualityTools.Testing.Fakes;
+using Porter.Models;
 using SharpCompress.Archive;
 using SharpCompress.Common;
 using System.Diagnostics;
@@ -54,7 +55,7 @@ namespace Porter.IntegrationTests
 		[Fact]
 		public void TestGetFirstLevelOfTypeHierarchy()
 		{
-			var typeHierarchy = _clrData.GetTypeHierarchy().Select(t => t.Namespace).ToArray();
+			var typeHierarchy = _clrData.GetTypeHierarchy().Select(t => t.Name).ToArray();
 
 			Assert.Contains("System", typeHierarchy);
 			Assert.Contains("(global namespace)", typeHierarchy);
@@ -68,11 +69,22 @@ namespace Porter.IntegrationTests
 		[Fact]
 		public void TestGet2ndLevelOfTypeHierarchy()
 		{
-			var typeHierarchy = _clrData.GetTypeHierarchy().Where(p => p.Namespace == "System")
-				.SelectMany(p =>p.Elements()).Select(p=>p.Namespace).ToArray();
-			Assert.Contains("Object", typeHierarchy);
-			Assert.Contains("String", typeHierarchy);
+			var typeHierarchy = _clrData.GetTypeHierarchy().Where(p => p.Name == "System")
+				.OfType<TypeHierarchy>()
+				.SelectMany(p => p.Elements()).Select(p => p.Name).ToArray();
+
+			var typeHierarchy2 = _clrData.GetTypeHierarchy().Where(p => p.Name == "System")
+				.OfType<TypeHierarchy>()
+				.SelectMany(p => p.Elements()).OfType<TypeHierarchy>().SelectMany(p=>p.Elements()).ToArray();
+
+
+
+			Assert.Contains("System.Object", typeHierarchy);
+			Assert.Contains("System.String", typeHierarchy);
+
 		}
+
+
 
 		private readonly ExtendedDebugger _debugger;
 

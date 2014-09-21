@@ -51,7 +51,7 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 				return _heapObjects;
 			}
 
-			public IEnumerable<TypeHierarchy> GetTypeHierarchy()
+			public IEnumerable<ITypeNode> GetTypeHierarchy()
 			{
 				throw new NotImplementedException();
 			}

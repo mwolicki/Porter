@@ -1,4 +1,5 @@
-﻿using Microsoft.Diagnostics.Runtime;
+﻿using System.Runtime.CompilerServices;
+using Microsoft.Diagnostics.Runtime;
 using Porter.Extensions;
 using Porter.Models;
 using System;
@@ -29,27 +30,55 @@ namespace Porter
 				   select type.GetReferenceObjectFactory(objRef);
 		}
 
-		public IEnumerable<TypeHierarchy> GetTypeHierarchy()
+		public IEnumerable<ITypeNode> GetTypeHierarchy()
 		{
 			return from type in ClrHeap.EnumerateTypes()
 				let fullName = type.Name.Contains(".") ? type.Name : "(global namespace)." + type.Name
 				group type by fullName.Split('.').First()
 					into grp
-					   select new TypeHierarchy { Namespace = grp.Key, Elements = () => GetTypeHierarchy(grp, 1) };
+					   select new TypeHierarchy { Name = grp.Key, Elements = () => GetTypeHierarchy(grp, 1) };
 		}
 
-		private IEnumerable<TypeHierarchy> GetTypeHierarchy(IEnumerable<ClrType> grp, int level)
+		private IEnumerable<ITypeNode> GetTypeHierarchy(IEnumerable<ClrType> clrTypes, int level)
 		{
-			return from type in grp
-				group type by type.Name.Split('.')[level]
-				into grp2
-				select new TypeHierarchy {Namespace = grp2.Key, Elements = () => GetTypeHierarchy(grp2, level + 1)};
-		}
-	}
+			var nextLevelElements = new MultiElementDictionary<string, ClrType>();
+			foreach (ClrType clrType in clrTypes)
+			{
+				if (ContainsCharExpectedNumberTimes(clrType.Name, '.', level))
+				{
+					yield return new TypeLeaf { Name = clrType.Name };
+				}
+				else
+				{
+					var x = clrType.Name.Split('.')[level];
+					nextLevelElements.Add(x, clrType);
+				}
+			}
 
-	public class TypeHierarchy 
-	{
-		public string Namespace { get; set; }
-		public Func<IEnumerable<TypeHierarchy>> Elements { get; set; }
+			foreach (var keyValuePair in nextLevelElements.GetDictionary())
+			{
+				yield return GetTypeHierarchy(level, keyValuePair.Key, keyValuePair.Value);
+			}
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private bool ContainsCharExpectedNumberTimes(string s, char c, int number)
+		{
+			var arr = s.ToCharArray();
+			for (int i = 0; i < arr.Length; i++)
+			{
+				if (arr[i] == c)
+				{
+					if (--number == -1)
+						return false;
+				}
+			}
+			return number == 0;
+		}
+
+		private TypeHierarchy GetTypeHierarchy(int level, string name, IEnumerable<ClrType> groupedTypesByNamespaceCopy)
+		{
+			return new TypeHierarchy { Name = name, Elements = () => GetTypeHierarchy(groupedTypesByNamespaceCopy, level + 1) };
+		}
 	}
 }
