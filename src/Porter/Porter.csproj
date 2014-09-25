@@ -23,6 +23,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -50,6 +51,7 @@
     <Compile Include="ExtendedDebugger.cs" />
     <Compile Include="ExtendedDebuggerFactory.cs" />
     <Compile Include="Extensions\ClrTypeExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="IClrData.cs" />
     <Compile Include="IExtendedDebugger.cs" />
     <Compile Include="IExtendedDebuggerFactory.cs" />
@@ -58,6 +60,9 @@
     <Compile Include="Models\IFieldData.cs" />
     <Compile Include="Models\IReferenceObject.cs" />
     <Compile Include="Models\ITypeDescription.cs" />
+    <Compile Include="Models\ITypeNode.cs" />
+    <Compile Include="Models\TypeHierarchy.cs" />
+    <Compile Include="Models\TypeLeaf.cs" />
     <Compile Include="MultiElementDictionary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\ReferenceObject.cs" />

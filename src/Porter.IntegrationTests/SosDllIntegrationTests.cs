@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Microsoft.QualityTools.Testing.Fakes;
-using Porter.Models;
+﻿using Porter.Models;
+using Porter.Extensions;
 using SharpCompress.Archive;
 using SharpCompress.Common;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Xunit;
+using Xunit.Extensions;
 
 namespace Porter.IntegrationTests
 {
@@ -73,22 +71,49 @@ namespace Porter.IntegrationTests
 				.OfType<TypeHierarchy>()
 				.SelectMany(p => p.Elements()).Select(p => p.Name).ToArray();
 
-			var typeHierarchy2 = _clrData.GetTypeHierarchy().Where(p => p.Name == "System")
-				.OfType<TypeHierarchy>()
-				.SelectMany(p => p.Elements()).OfType<TypeHierarchy>().SelectMany(p=>p.Elements()).ToArray();
-
-
 
 			Assert.Contains("System.Object", typeHierarchy);
 			Assert.Contains("System.String", typeHierarchy);
 
 		}
 
+		[Theory]
+		[InlineData("asdfd0-#adsf", 0u)]
+		[InlineData("er werewtr", 1u)]
+		[InlineData("gąśćdsgdfg", 2u)]
+		[InlineData("retrt", 3u)]
+		[InlineData("vdf迪dfg", 4u)]
+		[InlineData("", 5u)]
+		[InlineData("", 6u)]
+		[InlineData(null, 7u)]
+		[InlineData(null, 100u)]
+		public void GetTextAfterDot(string expectedText, uint position)
+		{
+			var text = "asdfd0-#adsf.er werewtr.gąśćdsgdfg.retrt.vdf迪dfg..";
+			Assert.Equal(expectedText, text.GetSubNamespace(position));
+		}
+
+		[Theory]
+		[InlineData(true, 0u)]
+		[InlineData(true, 1u)]
+		[InlineData(true, 2u)]
+		[InlineData(true, 3u)]
+		[InlineData(true, 4u)]
+		[InlineData(true, 5u)]
+		[InlineData(true, 6u)]
+		[InlineData(false, 7u)]
+		[InlineData(false, 100u)]
+		public void Count(bool expected, uint position)
+		{
+			var text = "asdfd0-#adsf.er werewtr.gąśćdsgdfg.retrt.vdf迪dfg..";
+			Assert.Equal(expected, text.ContainsSubNamespace(position));
+		}
 
 
 		private readonly ExtendedDebugger _debugger;
 
 		private readonly IClrData _clrData;
 		private const string _dumpFileName = @"ExampleConsoleApp.vshost.dmp";
+		private const int iter = 100000;
 	}
 }

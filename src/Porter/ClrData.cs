@@ -39,18 +39,18 @@ namespace Porter
 					   select new TypeHierarchy { Name = grp.Key, Elements = () => GetTypeHierarchy(grp, 1) };
 		}
 
-		private IEnumerable<ITypeNode> GetTypeHierarchy(IEnumerable<ClrType> clrTypes, int level)
+		private IEnumerable<ITypeNode> GetTypeHierarchy(IEnumerable<ClrType> clrTypes, uint level)
 		{
 			var nextLevelElements = new MultiElementDictionary<string, ClrType>();
 			foreach (ClrType clrType in clrTypes)
 			{
-				if (ContainsCharExpectedNumberTimes(clrType.Name, '.', level))
+				if (clrType.Name.ContainsSubNamespace(level))
 				{
 					yield return new TypeLeaf { Name = clrType.Name };
 				}
 				else
 				{
-					var x = clrType.Name.Split('.')[level];
+					var x = clrType.Name.GetSubNamespace(level);
 					nextLevelElements.Add(x, clrType);
 				}
 			}
@@ -61,22 +61,9 @@ namespace Porter
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private bool ContainsCharExpectedNumberTimes(string s, char c, int number)
-		{
-			var arr = s.ToCharArray();
-			for (int i = 0; i < arr.Length; i++)
-			{
-				if (arr[i] == c)
-				{
-					if (--number == -1)
-						return false;
-				}
-			}
-			return number == 0;
-		}
 
-		private TypeHierarchy GetTypeHierarchy(int level, string name, IEnumerable<ClrType> groupedTypesByNamespaceCopy)
+
+		private TypeHierarchy GetTypeHierarchy(uint level, string name, IEnumerable<ClrType> groupedTypesByNamespaceCopy)
 		{
 			return new TypeHierarchy { Name = name, Elements = () => GetTypeHierarchy(groupedTypesByNamespaceCopy, level + 1) };
 		}
