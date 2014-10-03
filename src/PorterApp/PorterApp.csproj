@@ -29,7 +29,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -67,6 +67,9 @@
     <Compile Include="OpenDumpFileDialog.cs" />
     <Compile Include="SizeValueConverter.cs" />
     <Compile Include="Command\OpenObjectViewCommand.cs" />
+    <Compile Include="ViewModel\ReferenceObjectTreeItem.cs" />
+    <Compile Include="ViewModel\TreeItem.cs" />
+    <Compile Include="ViewModel\TypeTreeItem.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -121,7 +124,7 @@
     <ProjectReference Include="..\Porter\Porter.csproj">
       <Project>{995FF359-0B67-46F0-AB10-E0A06419D483}</Project>
       <Name>Porter</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

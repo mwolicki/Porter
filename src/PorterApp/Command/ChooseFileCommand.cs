@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Porter;
+using Porter.Models;
 using PorterApp.Extensions;
 using PorterApp.ViewModel;
 
@@ -42,9 +46,9 @@ namespace PorterApp.Command
 			}
 		}
 
-		private void Execute(IHeapObjectList list)
+		private  void Execute(IHeapObjectList list)
 		{
-			ObservableCollection<ObjectViewModel> objectViewModels = list.Objects;
+			ObservableCollection<TreeItem> objectViewModels = list.TypesTree;
 
 			string fileName;
 			if (_openDumpFileFactory().TryGetFileName(out fileName))
@@ -53,23 +57,50 @@ namespace PorterApp.Command
 			}
 		}
 
-		private void PopulateObjectList(string fileName, ObservableCollection<ObjectViewModel> objectViewModels)
+		private async void PopulateObjectList(string fileName, ObservableCollection<TreeItem> objectViewModels)
 		{
+			objectViewModels.Clear();
 			try
 			{
-				IExtendedDebugger extendedDebugger = _extendedDebugger().Create(fileName);
-
-				objectViewModels.Clear();
-
-				foreach (var heapObjects in extendedDebugger.GetClrs().SelectMany(p => p.GetHeapObjects()))
+				foreach (var typeNode in await SelectMany(fileName))
 				{
-					objectViewModels.AddHeapObject(heapObjects);
+					objectViewModels.Add(new TypeTreeItem(typeNode));
 				}
 			}
 			catch (FileNotFoundException)
 			{
 				_alert.Display(fileName);
 			}
+		}
+
+		public static Task<T> StartSTATask<T>(Func<T> func)
+		{
+			var tcs = new TaskCompletionSource<T>();
+			var thread = new Thread(() =>
+			{
+				try
+				{
+					tcs.SetResult(func());
+				}
+				catch (Exception e)
+				{
+					tcs.SetException(e);
+				}
+			});
+			thread.SetApartmentState(ApartmentState.STA);
+			thread.Start();
+			return tcs.Task;
+		}
+
+		private Task<ITypeNode[]> SelectMany(string fileName)
+		{
+
+			return StartSTATask(() =>
+			{
+				
+				IExtendedDebugger extendedDebugger = _extendedDebugger().Create(fileName);
+				return extendedDebugger.GetClrs().SelectMany(p => p.GetTypeHierarchy()).ToArray();
+			});
 		}
 
 		public event EventHandler CanExecuteChanged;

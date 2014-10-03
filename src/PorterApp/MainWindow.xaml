@@ -8,25 +8,20 @@
 	mc:Ignorable="d" x:Class="PorterApp.MainWindow"
         Title="MainWindow" Height="350" Width="525" d:DataContext="{d:DesignInstance viewModel:MainViewModel}">
 	<Window.Resources>
-		<porterApp:SizeValueConverter x:Key="SizeValueConverter" />
+		<!--<Style TargetType="{x:Type TreeViewItem}">
+			<Setter Property="Background" Value="{Binding Background}"/>
+		</Style>-->
+
+		<HierarchicalDataTemplate x:Key="ItemTemplate" DataType="viewModel:TreeItem" ItemsSource="{Binding Path=Children}">
+			<TextBlock Text="{Binding Name}" />
+		</HierarchicalDataTemplate>
 	</Window.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="6*" />
 			<RowDefinition Height="23*" />
 		</Grid.RowDefinitions>
-		<DataGrid Margin="10,40,10,10" Grid.RowSpan="2" ItemsSource="{Binding Objects, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedObject}" IsReadOnly="True">
-			<DataGrid.Columns>
-				<DataGridTextColumn Binding="{Binding Path=Name}" Header="Name" />
-				<DataGridTextColumn Binding="{Binding Path=Size, Converter={StaticResource SizeValueConverter}}"  Header="Size" />
-			</DataGrid.Columns>
-			<DataGrid.InputBindings>
-			<MouseBinding
-				MouseAction="LeftDoubleClick"
-				Command="{Binding OpenObjectViewCommand}"
-				CommandParameter="{Binding}"/>
-			</DataGrid.InputBindings>
-		</DataGrid>
 		<Button Content="Load dump file" HorizontalAlignment="Left" Margin="10,15,0,0" VerticalAlignment="Top" Width="99" Command="{Binding ChooseFileCommand}" CommandParameter="{Binding .}" />
+		<TreeView Margin="10,0,10,10" Grid.Row="1" ItemsSource="{Binding TypesTree}" ItemTemplate="{StaticResource ItemTemplate}"/>
 	</Grid>
 </Window>

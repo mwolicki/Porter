@@ -5,6 +5,6 @@ namespace PorterApp
 {
 	internal interface IHeapObjectList
 	{
-		ObservableCollection<ObjectViewModel> Objects { get; set; }
+		ObservableCollection<TreeItem> TypesTree { get; set; }
 	}
 }

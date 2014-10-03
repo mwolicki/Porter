@@ -34,7 +34,7 @@ namespace Porter
 		{
 			return from type in ClrHeap.EnumerateTypes()
 				let fullName = type.Name.Contains(".") ? type.Name : "(global namespace)." + type.Name
-				group type by fullName.Split('.').First()
+				   group type by fullName.GetSubNamespace(0)
 					into grp
 					   select new TypeHierarchy { Name = grp.Key, Elements = () => GetTypeHierarchy(grp, 1) };
 		}
@@ -44,14 +44,13 @@ namespace Porter
 			var nextLevelElements = new MultiElementDictionary<string, ClrType>();
 			foreach (ClrType clrType in clrTypes)
 			{
-				if (clrType.Name.ContainsSubNamespace(level))
+				if (clrType.Name.IsLastSubNamespace(level) || clrType.Name.IsLastSubNamespace(0))
 				{
 					yield return new TypeLeaf { Name = clrType.Name };
 				}
 				else
 				{
-					var x = clrType.Name.GetSubNamespace(level);
-					nextLevelElements.Add(x, clrType);
+					nextLevelElements.Add(clrType.Name.GetSubNamespace(level), clrType);
 				}
 			}
 

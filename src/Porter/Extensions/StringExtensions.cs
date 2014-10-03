@@ -6,20 +6,22 @@ namespace Porter.Extensions
 	{
 		private const char Separator = '.';
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static unsafe bool ContainsSubNamespace(this string s, uint number)
+		//[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		internal static unsafe bool IsLastSubNamespace(this string s, uint number)
 		{
+			long num = number;
+
 			var length = s.Length;
 			fixed (char* p = s)
-				for (int i = 0; i < length && number > 0; i++)
+				for (int i = 0; i < length && num >= 0; i++)
 				{
 					if (p[i] == Separator)
-						--number;
+						--num;
 				}
-			return number == 0;
+			return num == 0;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		//[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static unsafe string GetSubNamespace(this string s, uint position)
 		{
 			int? startPos = position == 0 ? 0 : default(int?);

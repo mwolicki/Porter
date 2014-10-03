@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,6 +29,7 @@ namespace Porter
 		}
 
 		//TODO: Change this to return IEnumerable - check if we need current implementation
+		[Obsolete]
 		public Dictionary<TKey, LinkedList<TValue>> GetDictionary()
 		{
 			return _elements;

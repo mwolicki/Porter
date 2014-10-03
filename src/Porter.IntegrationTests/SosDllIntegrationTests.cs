@@ -71,6 +71,12 @@ namespace Porter.IntegrationTests
 				.OfType<TypeHierarchy>()
 				.SelectMany(p => p.Elements()).Select(p => p.Name).ToArray();
 
+			var typeHierarchy2 = _clrData.GetTypeHierarchy().Where(p => p.Name == "System")
+				.OfType<TypeHierarchy>()
+				.SelectMany(p => p.Elements()).OfType<TypeHierarchy>().SelectMany(p=>p.Elements()).ToArray();
+
+			
+
 
 			Assert.Contains("System.Object", typeHierarchy);
 			Assert.Contains("System.String", typeHierarchy);
@@ -94,19 +100,19 @@ namespace Porter.IntegrationTests
 		}
 
 		[Theory]
-		[InlineData(true, 0u)]
-		[InlineData(true, 1u)]
-		[InlineData(true, 2u)]
-		[InlineData(true, 3u)]
-		[InlineData(true, 4u)]
-		[InlineData(true, 5u)]
+		[InlineData(false, 0u)]
+		[InlineData(false, 1u)]
+		[InlineData(false, 2u)]
+		[InlineData(false, 3u)]
+		[InlineData(false, 4u)]
+		[InlineData(false, 5u)]
 		[InlineData(true, 6u)]
 		[InlineData(false, 7u)]
 		[InlineData(false, 100u)]
 		public void Count(bool expected, uint position)
 		{
 			var text = "asdfd0-#adsf.er werewtr.gąśćdsgdfg.retrt.vdf迪dfg..";
-			Assert.Equal(expected, text.ContainsSubNamespace(position));
+			Assert.Equal(expected, text.IsLastSubNamespace(position));
 		}
 
 
