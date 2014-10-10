@@ -59,7 +59,6 @@
     </ApplicationDefinition>
     <Compile Include="Extensions\ObservableCollectionExtensions.cs" />
     <Compile Include="IDumpFileNotFoundAlert.cs" />
-    <Compile Include="IHeapObjectList.cs" />
     <Compile Include="IOpenFileDialog.cs" />
     <Compile Include="ObjectDetails.xaml.cs">
       <DependentUpon>ObjectDetails.xaml</DependentUpon>
@@ -67,6 +66,7 @@
     <Compile Include="OpenDumpFileDialog.cs" />
     <Compile Include="SizeValueConverter.cs" />
     <Compile Include="Command\OpenObjectViewCommand.cs" />
+    <Compile Include="ViewModel\ITypesTreeViewModel.cs" />
     <Compile Include="ViewModel\ReferenceObjectTreeItem.cs" />
     <Compile Include="ViewModel\TreeItem.cs" />
     <Compile Include="ViewModel\TypeTreeItem.cs" />

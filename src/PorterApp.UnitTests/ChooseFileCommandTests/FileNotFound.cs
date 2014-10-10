@@ -12,7 +12,7 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 		public void Execute_FileNotFound_AlertUser()
 		{
 			var chooseFileCommand = GetChooseFileCommand();
-			chooseFileCommand.Execute(HeapObjectListSpy);
+			chooseFileCommand.Execute(TypesTreeViewModelSpy);
 			Assert.Equal(1, DumpFileNotFoundAlertSpy.Count);
 		}
 
@@ -21,7 +21,7 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 		{
 			const string fileName = "expectedFileName";
 			var chooseFileCommand = GetChooseFileCommand();
-			chooseFileCommand.Execute(HeapObjectListSpy);
+			chooseFileCommand.Execute(TypesTreeViewModelSpy);
 			Assert.Equal(fileName, DumpFileNotFoundAlertSpy.FilePath);
 		}
 

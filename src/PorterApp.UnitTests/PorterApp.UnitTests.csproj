@@ -54,7 +54,7 @@
     <Compile Include="ChooseFileCommandTests\ExtendedDebuggerFactorySpy.cs" />
     <Compile Include="ChooseFileCommandTests\FileNotFound.cs" />
     <Compile Include="ChooseFileCommandTests\FileNotFoundExtendedDebugger.cs" />
-    <Compile Include="ChooseFileCommandTests\HeapObjectListSpy.cs" />
+    <Compile Include="ChooseFileCommandTests\TypesTreeViewModelSpy.cs" />
     <Compile Include="ChooseFileCommandTests\LoadObjectToList.cs" />
     <Compile Include="ChooseFileCommandTests\NotEmptyDebuggerStub.cs" />
     <Compile Include="ChooseFileCommandTests\OpenDumpFileDialogStub.cs" />

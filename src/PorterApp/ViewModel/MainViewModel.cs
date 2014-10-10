@@ -5,7 +5,7 @@ using PorterApp.Command;
 
 namespace PorterApp.ViewModel
 {
-	internal sealed class MainViewModel : NotifyPropertyChange, IHeapObjectList
+	internal sealed class MainViewModel : NotifyPropertyChange, ITypesTreeViewModel
 	{
 		public ICommand ChooseFileCommand
 		{

@@ -7,7 +7,7 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 	public class ChooseFileCommandTestsBase
 	{
 		protected readonly DumpFileNotFoundAlertSpy DumpFileNotFoundAlertSpy = new DumpFileNotFoundAlertSpy();
-		internal readonly HeapObjectListSpy HeapObjectListSpy = new HeapObjectListSpy();
+		internal readonly TypesTreeViewModelSpy TypesTreeViewModelSpy = new TypesTreeViewModelSpy();
 
 		internal ChooseFileCommand GetChooseFileCommand(Func<IExtendedDebuggerFactory> extendedDebugger, Func<IOpenFileDialog> openDumpFileFactory, IDumpFileNotFoundAlert dumpFileNotFoundAlertSpy)
 		{

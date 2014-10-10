@@ -6,26 +6,27 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 {
 	public sealed class LoadObjectToList : ChosenFile
 	{
+
 		[Fact]
 		public void Execute_SelectedFile_ObjectsLoaded()
 		{
 			InvokeExecute();
-			Assert.True(HeapObjectListSpy.TypesTree.Any());
+			Assert.True(TypesTreeViewModelSpy.TypesTree.Any());
 		}
 
-		[Fact(Skip = "Test to fix")]
+		private readonly DelegateComparer<TreeItem> _delegateComparer = new DelegateComparer<TreeItem>((a, b) => a.Name == b.Name && a.Children.Count == b.Children.Count);
+
+		[Fact]
 		public void Execute_SelectedFile_ObjectsAreCorrectlyPopulated()
 		{
-			//var comparer = new DelegateComparer<ObjectViewModel>((a, b) => a.Name == b.Name && a.Size == b.Size);
-
-			//InvokeExecute();
-
-			//Assert.Equal(NotEmptyDebuggerStub.ExpectedObjectViewModels, HeapObjectListSpy.TypesTree, comparer);
+			
+			InvokeExecute();
+			Assert.Equal(NotEmptyDebuggerStub.ExpectedObjectViewModels, TypesTreeViewModelSpy.TypesTree, _delegateComparer);
 		}
 
 		private void InvokeExecute()
 		{
-			GetChooseFileCommand().Execute(HeapObjectListSpy);
+			GetChooseFileCommand().Execute(TypesTreeViewModelSpy);
 		}
 
 		[Fact]
@@ -33,16 +34,16 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 		{
 			const string expectedFileName = "expectedFileName";
 			var chooseFileCommand = GetChooseFileCommand(expectedFileName);
-			chooseFileCommand.Execute(HeapObjectListSpy);
+			chooseFileCommand.Execute(TypesTreeViewModelSpy);
 			Assert.Equal(expectedFileName, ExtendedDebuggerFactorySpy.FilePath);
 		}
 
-		[Fact(Skip = "Test to fix")]
+		[Fact]
 		public void Execute_SelectedFile_ClearList()
 		{
-			//InvokeExecute();
-			//InvokeExecute();
-			//Assert.Equal(NotEmptyDebuggerStub.ExpectedObjectViewModels, HeapObjectListSpy.Objects, new DelegateComparer<ObjectViewModel>((a, b) => a.Size == b.Size));
+			InvokeExecute();
+			InvokeExecute();
+			Assert.Equal(NotEmptyDebuggerStub.ExpectedObjectViewModels, TypesTreeViewModelSpy.TypesTree, _delegateComparer);
 		}
 	}
 }

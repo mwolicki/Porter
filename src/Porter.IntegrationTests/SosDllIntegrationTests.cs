@@ -36,21 +36,6 @@ namespace Porter.IntegrationTests
 		}
 
 		[Fact]
-		public void TestGetAnyHeapObjects()
-		{
-			Assert.Equal(1882, _clrData.GetHeapObjects().Count());
-		}
-
-		[Fact]
-		public void TestReferenceToObject_CanNavigateToNextObject()
-		{
-			var examplePublicClassFactory = _clrData.GetHeapObjects().FirstOrDefault(p => p().TypeObjectDescription.Name.Contains("ExamplePublicClass"));
-			Debug.Assert(examplePublicClassFactory != null, "examplePublicClassFactory != null");
-			var field = examplePublicClassFactory().Fields["<Name>k__BackingField"];
-			Assert.NotNull(field());
-		}
-
-		[Fact]
 		public void TestGetFirstLevelOfTypeHierarchy()
 		{
 			var typeHierarchy = _clrData.GetTypeHierarchy().Select(t => t.Name).ToArray();

@@ -3,9 +3,9 @@ using PorterApp.ViewModel;
 
 namespace PorterApp.UnitTests.ChooseFileCommandTests
 {
-	internal sealed class HeapObjectListSpy : IHeapObjectList
+	internal sealed class TypesTreeViewModelSpy : ITypesTreeViewModel
 	{
-		public HeapObjectListSpy()
+		public TypesTreeViewModelSpy()
 		{
 			TypesTree = new ObservableCollection<TreeItem>();
 		}

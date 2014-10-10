@@ -39,14 +39,14 @@ namespace PorterApp.Command
 
 		public void Execute(object parameter)
 		{
-			var list = parameter as IHeapObjectList;
+			var list = parameter as ITypesTreeViewModel;
 			if (list != null)
 			{
 				Execute(list);
 			}
 		}
 
-		private  void Execute(IHeapObjectList list)
+		private  void Execute(ITypesTreeViewModel list)
 		{
 			ObservableCollection<TreeItem> objectViewModels = list.TypesTree;
 

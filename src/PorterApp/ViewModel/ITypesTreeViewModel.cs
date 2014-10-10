@@ -1,9 +1,8 @@
 ﻿using System.Collections.ObjectModel;
-using PorterApp.ViewModel;
 
-namespace PorterApp
+namespace PorterApp.ViewModel
 {
-	internal interface IHeapObjectList
+	internal interface ITypesTreeViewModel
 	{
 		ObservableCollection<TreeItem> TypesTree { get; set; }
 	}

@@ -12,7 +12,7 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 			var chooseFileCommand = GetChooseFileCommand(() => _extendedDebuggerFactorySpy, () => new OpenDumpFileDialogStub(),
 				DumpFileNotFoundAlertSpy);
 
-			chooseFileCommand.Execute(HeapObjectListSpy);
+			chooseFileCommand.Execute(TypesTreeViewModelSpy);
 
 			Assert.False(_extendedDebuggerFactorySpy.Executed);
 		}
