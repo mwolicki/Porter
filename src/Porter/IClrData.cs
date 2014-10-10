@@ -6,7 +6,6 @@ namespace Porter
 {
 	public interface IClrData
 	{
-		IEnumerable<Func<IReferenceObject>> GetHeapObjects();
 		IEnumerable<ITypeNode> GetTypeHierarchy();
 	}
 }
