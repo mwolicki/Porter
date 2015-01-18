@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Porter.Diagnostics.Decorator
 {
@@ -6,11 +7,7 @@ namespace Porter.Diagnostics.Decorator
 	{
 		public static IEnumerable<T> Dispatch<T>(this IEnumerable<T> enumerable, ThreadDispatcher threadDispatcher)
 		{
-			var enumerator = threadDispatcher.Process(() => enumerable.GetEnumerator());
-			while (threadDispatcher.Process(() => enumerator.MoveNext()))
-			{
-				yield return enumerator.Current;
-			}
+			return threadDispatcher.Process(() => enumerable.ToArray());
 		}
 	}
 }
