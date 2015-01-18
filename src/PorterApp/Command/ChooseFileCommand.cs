@@ -30,24 +30,27 @@ namespace PorterApp.Command
 			_openDumpFileFactory = () => new OpenDumpFileDialog();
 		}
 
-		public override void Execute(ITypesTreeViewModel list)
+		public override async void Execute(ITypesTreeViewModel list)
 		{
 			string fileName;
 			if (_openDumpFileFactory().TryGetFileName(out fileName))
 			{
-				PopulateObjectList(fileName);
+				await PopulateObjectList(fileName);
 			}
 		}
 
-		private async void PopulateObjectList(string fileName)
+		private async Task PopulateObjectList(string fileName)
 		{
 			try
 			{
 				var treeItems = new ObservableCollection<TreeItem>();
-				foreach (var typeNode in SelectMany(fileName))
+				await Task.Run(() =>
 				{
-					treeItems.Add(new TypeTreeItem(typeNode));
-				}
+					foreach (var typeNode in SelectMany(fileName))
+					{
+						treeItems.Add(new TypeTreeItem(typeNode));
+					}
+				});
 				WindowDispatcher.Show(new TypesTreeWindow(treeItems));
 			}
 			catch (FileNotFoundException)
@@ -58,11 +61,7 @@ namespace PorterApp.Command
 
 		private IEnumerable<ITypeNode> SelectMany(string fileName)
 		{
-			return _extendedDebugger().Create(fileName).GetClrs().SelectMany(p =>
-			{
-				var typeNodes1 = p.GetTypeHierarchy();
-				return typeNodes1.ToArray();
-			});
+			return _extendedDebugger().Create(fileName).GetClrs().SelectMany(p => p.GetTypeHierarchy());
 		}
 	}
 }
