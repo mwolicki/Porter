@@ -43,7 +43,7 @@ namespace Porter
 		private IEnumerable<ITypeNode> GetTypeHierarchy(IEnumerable<IClrTypeDecorator> clrTypes, uint level)
 		{
 			var nextLevelElements = new MultiElementDictionary<string, IClrTypeDecorator>();
-			foreach (ClrTypeDecorator clrType in clrTypes)
+			foreach (IClrTypeDecorator clrType in clrTypes)
 			{
 				var type = clrType;
 				if (type.Name.IsLastSubNamespace(level) || type.Name.IsLastSubNamespace(0))
