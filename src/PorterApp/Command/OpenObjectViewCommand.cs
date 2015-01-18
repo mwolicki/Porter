@@ -1,25 +1,16 @@
-﻿using System;
-using System.Windows.Input;
-using PorterApp.ViewModel;
+﻿using PorterApp.ViewModel;
 
 namespace PorterApp.Command
 {
-	internal sealed class OpenObjectViewCommand : ICommand
+	internal sealed class OpenObjectViewCommand : BaseCommand<MainViewModel>
 	{
-		public bool CanExecute(object parameter)
-		{
-			return true;
-		}
-
-		public void Execute(object parameter)
+		public override void Execute(MainViewModel parameter)
 		{
 			var objectDetails = new ObjectDetails
 			{
-				DataContext = new ObjectDetailsViewModel(((MainViewModel)parameter).SelectedObject.ReferenceObject)
+				DataContext = new ObjectDetailsViewModel((parameter).SelectedObject.ReferenceObject)
 			};
 			objectDetails.Show();
 		}
-
-		public event EventHandler CanExecuteChanged;
 	}
 }

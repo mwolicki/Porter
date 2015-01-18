@@ -4,9 +4,10 @@ namespace Porter.Extensions
 {
 	static class StringExtensions
 	{
-		private const char Separator = '.';
+		private const char DotSeparator = '.';
+		private const char PlusSeparator = '+';
 
-		//[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static unsafe bool IsLastSubNamespace(this string s, uint number)
 		{
 			long num = number;
@@ -15,13 +16,13 @@ namespace Porter.Extensions
 			fixed (char* p = s)
 				for (int i = 0; i < length && num >= 0; i++)
 				{
-					if (p[i] == Separator)
+					if (p[i] == DotSeparator || p[i] == PlusSeparator)
 						--num;
 				}
 			return num == 0;
 		}
 
-		//[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal static unsafe string GetSubNamespace(this string s, uint position)
 		{
 			int? startPos = position == 0 ? 0 : default(int?);
@@ -30,7 +31,7 @@ namespace Porter.Extensions
 			fixed (char* p = s)
 				for (; i < s.Length; i++)
 				{
-					if (p[i] == Separator)
+					if (p[i] == DotSeparator || p[i] == PlusSeparator)
 					{
 						if (position == 1)
 						{

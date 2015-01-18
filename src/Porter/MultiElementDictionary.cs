@@ -29,7 +29,7 @@ namespace Porter
 		}
 
 		//TODO: Change this to return IEnumerable - check if we need current implementation
-		[Obsolete]
+		[Obsolete("Change this to return IEnumerable - check if we need current implementation")]
 		public Dictionary<TKey, LinkedList<TValue>> GetDictionary()
 		{
 			return _elements;

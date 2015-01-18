@@ -1,19 +1,22 @@
 using Porter;
 using Porter.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using PorterApp.ViewModel;
 
 namespace PorterApp.UnitTests.ChooseFileCommandTests
 {
+
+	//TODO: FIX after adding ASYNC...
 	public sealed class NotEmptyDebuggerStub : IExtendedDebugger
 	{
 		private static readonly TypeHierarchy GetTypeHierarchy = new TypeHierarchy
 		{
 			Name = "test",
-			Elements = () => new[] {new TypeHierarchy()}
+			Elements = new[] {new TypeHierarchy()}
 		};
 
-		public Architecture Architecture { get; private set; }
+		public ArchitectureType ArchitectureType { get; private set; }
 
 		internal static IEnumerable<TreeItem> ExpectedObjectViewModels
 		{
@@ -26,6 +29,16 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 			}
 		}
 
+		public ArchitectureType Architecture
+		{
+			get { throw new System.NotImplementedException(); }
+		}
+
+		IEnumerable<IClrData> IExtendedDebugger.GetClrs()
+		{
+			throw new System.NotImplementedException();
+		}
+
 		public IEnumerable<IClrData> GetClrs()
 		{
 			return new List<IClrData>
@@ -34,12 +47,18 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 			};
 		}
 
+		//FIX after adding ASYNC
 		private sealed class ClrData : IClrData
 		{
 
 			public IEnumerable<ITypeNode> GetTypeHierarchy()
 			{
 				yield return NotEmptyDebuggerStub.GetTypeHierarchy;
+			}
+
+			public Task<ITypeNode[]> GetTypeHierarchyAsync()
+			{
+				throw new System.NotImplementedException();
 			}
 		}
 

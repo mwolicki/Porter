@@ -32,7 +32,7 @@ namespace Porter.IntegrationTests
 		[Fact]
 		public void TestGetArchitecture()
 		{
-			Assert.Equal(Architecture.X86, _debugger.Architecture);
+			Assert.Equal(ArchitectureType.X86, _debugger.Architecture);
 		}
 
 		[Fact]
@@ -50,18 +50,11 @@ namespace Porter.IntegrationTests
 
 
 		[Fact]
-		public void TestGet2ndLevelOfTypeHierarchy()
+		public async void TestGet2ndLevelOfTypeHierarchy()
 		{
 			var typeHierarchy = _clrData.GetTypeHierarchy().Where(p => p.Name == "System")
 				.OfType<TypeHierarchy>()
-				.SelectMany(p => p.Elements()).Select(p => p.Name).ToArray();
-
-			var typeHierarchy2 = _clrData.GetTypeHierarchy().Where(p => p.Name == "System")
-				.OfType<TypeHierarchy>()
-				.SelectMany(p => p.Elements()).OfType<TypeHierarchy>().SelectMany(p=>p.Elements()).ToArray();
-
-			
-
+				.SelectMany(p => p.Elements).Select(p => p.Name).ToArray();
 
 			Assert.Contains("System.Object", typeHierarchy);
 			Assert.Contains("System.String", typeHierarchy);

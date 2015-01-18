@@ -5,15 +5,13 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Porter;
 using Porter.Models;
-using PorterApp.Extensions;
 using PorterApp.ViewModel;
 
 namespace PorterApp.Command
 {
-	internal sealed class ChooseFileCommand : ICommand
+	internal sealed class ChooseFileCommand : BaseCommand<ITypesTreeViewModel>
 	{
 		private readonly Func<IExtendedDebuggerFactory> _extendedDebugger;
 		private readonly Func<IOpenFileDialog> _openDumpFileFactory;
@@ -32,40 +30,25 @@ namespace PorterApp.Command
 			_openDumpFileFactory = () => new OpenDumpFileDialog();
 		}
 
-		public bool CanExecute(object parameter)
+		public override void Execute(ITypesTreeViewModel list)
 		{
-			return true;
-		}
-
-		public void Execute(object parameter)
-		{
-			var list = parameter as ITypesTreeViewModel;
-			if (list != null)
-			{
-				Execute(list);
-			}
-		}
-
-		private  void Execute(ITypesTreeViewModel list)
-		{
-			ObservableCollection<TreeItem> objectViewModels = list.TypesTree;
-
 			string fileName;
 			if (_openDumpFileFactory().TryGetFileName(out fileName))
 			{
-				PopulateObjectList(fileName, objectViewModels);
+				PopulateObjectList(fileName);
 			}
 		}
 
-		private async void PopulateObjectList(string fileName, ObservableCollection<TreeItem> objectViewModels)
+		private async void PopulateObjectList(string fileName)
 		{
-			objectViewModels.Clear();
 			try
 			{
-				foreach (var typeNode in await SelectMany(fileName))
+				var treeItems = new ObservableCollection<TreeItem>();
+				foreach (var typeNode in SelectMany(fileName))
 				{
-					objectViewModels.Add(new TypeTreeItem(typeNode));
+					treeItems.Add(new TypeTreeItem(typeNode));
 				}
+				WindowDispatcher.Show(new TypesTreeWindow(treeItems));
 			}
 			catch (FileNotFoundException)
 			{
@@ -73,36 +56,13 @@ namespace PorterApp.Command
 			}
 		}
 
-		public static Task<T> StartSTATask<T>(Func<T> func)
+		private IEnumerable<ITypeNode> SelectMany(string fileName)
 		{
-			var tcs = new TaskCompletionSource<T>();
-			var thread = new Thread(() =>
+			return _extendedDebugger().Create(fileName).GetClrs().SelectMany(p =>
 			{
-				try
-				{
-					tcs.SetResult(func());
-				}
-				catch (Exception e)
-				{
-					tcs.SetException(e);
-				}
-			});
-			thread.SetApartmentState(ApartmentState.STA);
-			thread.Start();
-			return tcs.Task;
-		}
-
-		private Task<ITypeNode[]> SelectMany(string fileName)
-		{
-
-			return StartSTATask(() =>
-			{
-				
-				IExtendedDebugger extendedDebugger = _extendedDebugger().Create(fileName);
-				return extendedDebugger.GetClrs().SelectMany(p => p.GetTypeHierarchy()).ToArray();
+				var typeNodes1 = p.GetTypeHierarchy();
+				return typeNodes1.ToArray();
 			});
 		}
-
-		public event EventHandler CanExecuteChanged;
 	}
 }

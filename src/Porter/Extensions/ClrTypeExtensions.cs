@@ -1,8 +1,8 @@
-﻿using Microsoft.Diagnostics.Runtime;
-using Porter.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Porter.Diagnostics.Decorator;
+using Porter.Models;
 
 namespace Porter.Extensions
 {
@@ -10,7 +10,7 @@ namespace Porter.Extensions
 	{
 		private const int Null = 0;
 
-		public static Func<IReferenceObject> GetReferenceObjectFactory(this ClrType type, ulong objRef, string value = "", bool isInterior = true)
+		public static Func<IReferenceObject> GetReferenceObjectFactory(this IClrTypeDecorator type, ulong objRef, string value = "", bool isInterior = true)
 		{
 			return () => new ReferenceObject
 			{
@@ -22,7 +22,7 @@ namespace Porter.Extensions
 			};
 		}
 
-		private static ITypeDescription GetTypeObjectDescription(this ClrType type)
+		private static ITypeDescription GetTypeObjectDescription(this IClrTypeDecorator type)
 		{
 			IEnumerable<string> methods = type.Methods.Select(m => m.Name);
 
@@ -35,7 +35,7 @@ namespace Porter.Extensions
 			return typeObjectDescription;
 		}
 
-		private static IMultiElementDictionary<string, Func<IFieldData>> GetObjectFieldsReferences(this ClrType type,
+		private static IMultiElementDictionary<string, Func<IFieldData>> GetObjectFieldsReferences(this IClrTypeDecorator type,
 			ulong objRef, bool isInterior)
 		{
 			return !type.IsPrimitive && !type.IsString
@@ -43,7 +43,7 @@ namespace Porter.Extensions
 				: new MultiElementDictionary<string, Func<IFieldData>>();
 		}
 
-		private static MultiElementDictionary<string, Func<IFieldData>> GetObjectFields(ClrType type, ulong objRef, bool isInterior)
+		private static MultiElementDictionary<string, Func<IFieldData>> GetObjectFields(IClrTypeDecorator type, ulong objRef, bool isInterior)
 		{
 			var objectFields = new MultiElementDictionary<string, Func<IFieldData>>();
 			bool interior = !type.IsObjectReference;
@@ -56,18 +56,18 @@ namespace Porter.Extensions
 			foreach (var field in type.Fields)
 			{
 				string fieldName = field.Name;
-				ClrInstanceField fieldRef = field;
+				ClrInstanceFieldDecorator fieldRef = field;
 				objectFields.Add(fieldName, () => GetFieldData(type, objRef, fieldRef, interior, fieldName));
 			}
 
 			return objectFields;
 		}
 
-		private static IFieldData GetFieldData(ClrType type, ulong objRef, ClrInstanceField fieldRef, bool interior,
+		private static IFieldData GetFieldData(IClrTypeDecorator type, ulong objRef, ClrInstanceFieldDecorator fieldRef, bool interior,
 			string fieldName)
 		{
 			ulong address = GetAddress(objRef, fieldRef, interior);
-			ClrType fieldType = GetFieldType(type, fieldRef, address);
+			IClrTypeDecorator fieldType = GetFieldType(type, fieldRef, address);
 			string fieldValue = GetFieldValue(objRef, fieldRef, interior, address, fieldType);
 
 			return new FieldData
@@ -77,8 +77,7 @@ namespace Porter.Extensions
 			};
 		}
 
-		private static string GetFieldValue(ulong objRef, ClrInstanceField fieldRef, bool interior, ulong address,
-			ClrType fieldType)
+		private static string GetFieldValue(ulong objRef, ClrInstanceFieldDecorator fieldRef, bool interior, ulong address, IClrTypeDecorator fieldType)
 		{
 			string fieldValue = string.Empty;
 
@@ -87,40 +86,37 @@ namespace Porter.Extensions
 				fieldValue = GetValueTypeValue(objRef, fieldRef, interior);
 			}
 
-			if (IsObjectAndNotString(fieldRef) && address != Null && fieldType.HasSimpleValue)
+			if (fieldRef.IsObjectAndNotString() && address != Null && fieldType.HasSimpleValue)
 			{
 				fieldValue = GetBoxedValueTypeValue(fieldType, address);
 			}
 			return fieldValue;
 		}
 
-		private static ClrType GetFieldType(ClrType type, ClrInstanceField fieldRef, ulong address)
+		private static IClrTypeDecorator GetFieldType(IClrTypeDecorator type, ClrInstanceFieldDecorator fieldRef, ulong address)
 		{
-			ClrType fieldType = fieldRef.Type;
+			IClrTypeDecorator fieldType = fieldRef.Type;
 
-			if (address != Null && IsObjectAndNotString(fieldRef))
+			if (address != Null && fieldRef.IsObjectAndNotString())
 			{
 				fieldType = type.Heap.GetObjectType(address);
 			}
 			return fieldType;
 		}
 
-		private static ulong GetAddress(ulong objRef, ClrInstanceField fieldRef, bool interior)
+		private static ulong GetAddress(ulong objRef, ClrInstanceFieldDecorator fieldRef, bool interior)
 		{
 			var address = fieldRef.GetFieldAddress(objRef, interior);
-			if (IsObjectAndNotString(fieldRef))
+			if (fieldRef.IsObjectAndNotString())
 			{
 				address = (ulong)fieldRef.GetFieldValue(objRef);
 			}
 			return address;
 		}
 
-		private static bool IsObjectAndNotString(ClrInstanceField fieldRef)
-		{
-			return fieldRef.IsObjectReference() && fieldRef.ElementType != ClrElementType.String;
-		}
+		
 
-		private static string GetValueTypeValue(ulong objRef, ClrInstanceField fieldRef, bool interior)
+		private static string GetValueTypeValue(ulong objRef, ClrInstanceFieldDecorator fieldRef, bool interior)
 		{
 			string fieldValue = string.Empty;
 
@@ -132,7 +128,7 @@ namespace Porter.Extensions
 			return fieldValue;
 		}
 
-		private static string GetBoxedValueTypeValue(ClrType fieldType, ulong address)
+		private static string GetBoxedValueTypeValue(IClrTypeDecorator fieldType, ulong address)
 		{
 			string fieldValue = string.Empty;
 

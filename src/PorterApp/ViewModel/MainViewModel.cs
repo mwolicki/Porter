@@ -12,9 +12,9 @@ namespace PorterApp.ViewModel
 			get { return new ChooseFileCommand(); }
 		}
 
-		private ObservableCollection<TreeItem> _objects = new ObservableCollection<TreeItem>();
+		private ObservableCollection<ObservableCollection<TreeItem>> _objects = new ObservableCollection<ObservableCollection<TreeItem>> {new ObservableCollection<TreeItem>()};
 
-		public ObservableCollection<TreeItem> TypesTree
+		public ObservableCollection<ObservableCollection<TreeItem>> TypesTree
 		{
 			get { return _objects; }
 			set
@@ -23,11 +23,6 @@ namespace PorterApp.ViewModel
 				_objects = value;
 				OnPropertyChanged();
 			}
-		}
-
-		public ICommand OpenObjectViewCommand
-		{
-			get { return new OpenObjectViewCommand(); }
 		}
 
 		public ObjectViewModel SelectedObject { get; set; }

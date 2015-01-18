@@ -4,6 +4,6 @@ namespace PorterApp.ViewModel
 {
 	internal interface ITypesTreeViewModel
 	{
-		ObservableCollection<TreeItem> TypesTree { get; set; }
+		ObservableCollection<ObservableCollection<TreeItem>> TypesTree { get; set; }
 	}
 }

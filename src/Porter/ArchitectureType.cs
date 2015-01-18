@@ -1,6 +1,6 @@
 ﻿namespace Porter
 {
-	public enum Architecture
+	public enum ArchitectureType
 	{
 		X86,
 		X64,

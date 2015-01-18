@@ -7,9 +7,9 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 	{
 		public TypesTreeViewModelSpy()
 		{
-			TypesTree = new ObservableCollection<TreeItem>();
+			TypesTree = new ObservableCollection<ObservableCollection<TreeItem>>();
 		}
 
-		public ObservableCollection<TreeItem> TypesTree { get; set; }
+		public ObservableCollection<ObservableCollection<TreeItem>> TypesTree { get; set; }
 	}
 }

@@ -3,7 +3,7 @@
   <InferProjectReferencesUsingAssemblyNames>false</InferProjectReferencesUsingAssemblyNames>
   <AllowParallelTestExecution>false</AllowParallelTestExecution>
   <AllowTestsToRunInParallelWithThemselves>true</AllowTestsToRunInParallelWithThemselves>
-  <FrameworkUtilisationTypeForNUnit>UseStaticAnalysis</FrameworkUtilisationTypeForNUnit>
+  <FrameworkUtilisationTypeForNUnit>UseDynamicAnalysis</FrameworkUtilisationTypeForNUnit>
   <FrameworkUtilisationTypeForGallio>UseStaticAnalysis</FrameworkUtilisationTypeForGallio>
   <FrameworkUtilisationTypeForMSpec>UseStaticAnalysis</FrameworkUtilisationTypeForMSpec>
   <FrameworkUtilisationTypeForMSTest>UseStaticAnalysis</FrameworkUtilisationTypeForMSTest>

@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.Diagnostics.Runtime;
 using Microsoft.Diagnostics.Runtime.Fakes;
+using Porter.Diagnostics.Decorator;
 using Porter.Extensions;
 using Porter.Models;
 using Xunit;
@@ -112,10 +113,70 @@ namespace Porter.IntegrationTests
 			};
 		}
 
+		sealed class StubClrTypeDecorator : IClrTypeDecorator
+		{
+			private readonly StubClrType _type;
+
+			public StubClrTypeDecorator(StubClrType type)
+			{
+				_type = type;
+			}
+
+			public IClrHeapDecorator Heap
+			{
+				get { throw new System.NotImplementedException(); }
+			}
+
+			public bool IsPrimitive
+			{
+				get { throw new System.NotImplementedException(); }
+			}
+
+			public bool IsString
+			{
+				get { throw new System.NotImplementedException(); }
+			}
+
+			public IEnumerable<ClrMethodDecorator> Methods
+			{
+				get { throw new System.NotImplementedException(); }
+			}
+
+			public bool IsObjectReference
+			{
+				get { throw new System.NotImplementedException(); }
+			}
+
+			public IEnumerable<ClrInstanceFieldDecorator> Fields
+			{
+				get { throw new System.NotImplementedException(); }
+			}
+
+			public string Name
+			{
+				get { throw new System.NotImplementedException(); }
+			}
+
+			public bool HasSimpleValue
+			{
+				get { throw new System.NotImplementedException(); }
+			}
+
+			public ulong GetSize(ulong objRef)
+			{
+				throw new System.NotImplementedException();
+			}
+
+			public object GetValue(ulong address)
+			{
+				throw new System.NotImplementedException();
+			}
+		}
+
 		[Fact]
 		public void GetTypeName_GivenObjectRef_ReturnCorrectName()
 		{
-			var result = _type.GetReferenceObjectFactory(1);
+			var result = new StubClrTypeDecorator(_type).GetReferenceObjectFactory(1);
 			Assert.Equal(TypeName, result().TypeObjectDescription.Name);
 			Assert.Equal(TypeSize, result().Size);
 			IFieldData valueTypeFieldData = result().Fields[ValueTypeFieldName]();

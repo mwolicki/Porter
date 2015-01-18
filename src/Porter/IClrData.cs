@@ -1,6 +1,5 @@
-﻿using Porter.Models;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Porter.Models;
 
 namespace Porter
 {

@@ -5,7 +5,7 @@ namespace Porter
 {
 	public interface IExtendedDebugger : IDisposable
 	{
-		Architecture Architecture { get; }
+		ArchitectureType Architecture { get; }
 		IEnumerable<IClrData> GetClrs();
 	}
 }

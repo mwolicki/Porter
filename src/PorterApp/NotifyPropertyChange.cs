@@ -4,7 +4,7 @@ using PorterApp.Annotations;
 
 namespace PorterApp
 {
-	internal abstract class NotifyPropertyChange : INotifyPropertyChanged
+    public abstract class NotifyPropertyChange : INotifyPropertyChanged
 	{
 		public virtual event PropertyChangedEventHandler PropertyChanged;
 

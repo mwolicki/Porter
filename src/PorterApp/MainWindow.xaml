@@ -3,25 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:porterApp="clr-namespace:PorterApp"
 	xmlns:viewModel="clr-namespace:PorterApp.ViewModel"
+	xmlns:dockingLibrary="clr-namespace:DockingLibrary;assembly=DockingLibrary"
 	mc:Ignorable="d" x:Class="PorterApp.MainWindow"
         Title="MainWindow" Height="350" Width="525" d:DataContext="{d:DesignInstance viewModel:MainViewModel}">
-	<Window.Resources>
-		<!--<Style TargetType="{x:Type TreeViewItem}">
-			<Setter Property="Background" Value="{Binding Background}"/>
-		</Style>-->
-
-		<HierarchicalDataTemplate x:Key="ItemTemplate" DataType="viewModel:TreeItem" ItemsSource="{Binding Path=Children}">
-			<TextBlock Text="{Binding Name}" />
-		</HierarchicalDataTemplate>
-	</Window.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="6*" />
 			<RowDefinition Height="23*" />
 		</Grid.RowDefinitions>
-		<Button Content="Load dump file" HorizontalAlignment="Left" Margin="10,15,0,0" VerticalAlignment="Top" Width="99" Command="{Binding ChooseFileCommand}" CommandParameter="{Binding .}" />
-		<TreeView Margin="10,0,10,10" Grid.Row="1" ItemsSource="{Binding TypesTree}" ItemTemplate="{StaticResource ItemTemplate}"/>
+
+		
+		<Button Content="Load dump file" HorizontalAlignment="Left" Margin="10,15,0,0" VerticalAlignment="Top" Width="99" Command="{Binding ChooseFileCommand}" CommandParameter="{Binding}" />
+		<dockingLibrary:DockManager Name="DockManager" Grid.Row="1"/>
 	</Grid>
 </Window>

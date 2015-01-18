@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PorterApp.ViewModel
 {
-	public abstract class TreeItem
+	public class TreeItem
 	{
 		public string Name { get; set; }
 
