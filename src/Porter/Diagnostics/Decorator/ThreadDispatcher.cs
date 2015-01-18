@@ -37,7 +37,11 @@ namespace Porter.Diagnostics.Decorator
 
 		public ThreadDispatcher()
 		{
-			_thread = new Thread(Loop);
+			_thread = new Thread(Loop)
+			{
+				IsBackground = true,
+				Name = "Thread Dispatcher "+ Guid.NewGuid().ToString()
+			};
 			_thread.SetApartmentState(ApartmentState.STA);
 			_thread.Start();
 		}
