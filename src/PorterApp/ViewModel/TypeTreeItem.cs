@@ -37,9 +37,7 @@ namespace PorterApp.ViewModel
 
 		private static ObservableCollection<TreeItem> GetChildrenTreeItems(TypeHierarchy typeHierarchy)
 		{
-			var typeNodes = (typeHierarchy.Elements);
-			var nodes = typeNodes.ToArray();
-			var typeTreeItems = nodes.Select(e => new TypeTreeItem(e));
+			var typeTreeItems = typeHierarchy.Elements.ToArray().Select(e => new TypeTreeItem(e));
 
 			return new ObservableCollection<TreeItem>(typeTreeItems);
 		}

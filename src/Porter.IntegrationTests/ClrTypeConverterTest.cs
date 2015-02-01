@@ -115,7 +115,7 @@ namespace Porter.IntegrationTests
 
 		sealed class StubClrTypeDecorator : IClrTypeDecorator
 		{
-			private readonly StubClrType _type;
+			private readonly StubClrType _type = new StubClrType();
 
 			public StubClrTypeDecorator(StubClrType type)
 			{

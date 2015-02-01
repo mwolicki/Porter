@@ -5,6 +5,6 @@ namespace Porter
 {
 	public interface IClrData
 	{
-		IEnumerable<ITypeNode> GetTypeHierarchy();
+		ISingleThreadEnumerable<ITypeNode> GetTypeHierarchy();
 	}
 }

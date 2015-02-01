@@ -6,6 +6,16 @@ namespace Porter.Models
 	public class TypeLeaf : ITypeNode
 	{
 		public string Name { get; set; }
-		public IEnumerable<Func<IReferenceObject>> Instances { get; set; }
+		public ISingleThreadEnumerable<Func<IReferenceObject>> Instances { get; set; }
+	}
+
+	public interface ISingleThreadEnumerable<T>:IEnumerable<T>
+	{
+		T[] ToArray();
+		//List<T> ToList();
+		//T Single();
+		//T SingleOrDefault();
+		//T First();
+		//T FirstOrDefault();
 	}
 }

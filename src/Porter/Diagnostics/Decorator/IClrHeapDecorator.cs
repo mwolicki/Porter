@@ -7,5 +7,6 @@ namespace Porter.Diagnostics.Decorator
 		IEnumerable<ulong> EnumerateObjects();
 		IClrTypeDecorator GetObjectType(ulong objRef);
 		IEnumerable<IClrTypeDecorator> EnumerateTypes();
+		ThreadDispatcher Dispatcher { get; }
 	}
 }

@@ -63,12 +63,12 @@ namespace Porter.Diagnostics.Decorator
 			}
 		}
 
-		public Task<T> ProcessAsync<T>(Func<T> func)
+		public Task<T> ProcessAsync<T>(Func<T> func) 
 		{
-			if (Thread.CurrentThread == _thread)
+			if (Thread.CurrentThread.ManagedThreadId == _thread.ManagedThreadId)
 			{
 				var result = func();
-				return Task.Run(() => result);
+				return Task.FromResult(result);
 			}
 
 			var tcs = new TaskCompletionSource<object>();
@@ -80,9 +80,15 @@ namespace Porter.Diagnostics.Decorator
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public bool IsCurrentThread()
+		{
+			return Thread.CurrentThread.ManagedThreadId == _thread.ManagedThreadId;
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public T Process<T>(Func<T> func)
 		{
-			if (Thread.CurrentThread == _thread)
+			if (Thread.CurrentThread.ManagedThreadId == _thread.ManagedThreadId)
 			{
 				return func();
 			}

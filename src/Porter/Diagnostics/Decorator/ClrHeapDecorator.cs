@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Diagnostics.Runtime;
 
 namespace Porter.Diagnostics.Decorator
@@ -8,33 +7,33 @@ namespace Porter.Diagnostics.Decorator
 	internal class ClrHeapDecorator : IClrHeapDecorator
 	{
 		private readonly ThreadDispatcher _threadDispatcher;
-		private readonly Task<ClrHeap> _clrHeap;
+		private readonly ClrHeap _clrHeap;
 
 		public ClrHeapDecorator(ClrRuntime clrRuntime, ThreadDispatcher threadDispatcher)
 		{
 			_threadDispatcher = threadDispatcher;
-			_clrHeap = threadDispatcher.ProcessAsync(() => clrRuntime.GetHeap());
+			_clrHeap = threadDispatcher.Process(() => clrRuntime.GetHeap());
 		}
 
-		private ClrHeap ClrHeap
+		public ThreadDispatcher Dispatcher
 		{
-			get { return _clrHeap.Result; }
+			get { return _threadDispatcher; }
 		}
 
 
 		public IEnumerable<ulong> EnumerateObjects()
 		{
-			return _threadDispatcher.Process(() => ClrHeap.EnumerateObjects()).Dispatch(_threadDispatcher);
+			return _threadDispatcher.Process(() => _clrHeap.EnumerateObjects()).Dispatch(_threadDispatcher);
 		}
 
 		public IClrTypeDecorator GetObjectType(ulong objRef)
 		{
-			return new ClrTypeDecorator(this, _threadDispatcher, _threadDispatcher.Process(() => ClrHeap.GetObjectType(objRef)));
+			return new ClrTypeDecorator(this, _threadDispatcher, _threadDispatcher.Process(() => _clrHeap.GetObjectType(objRef)));
 		}
 
 		public IEnumerable<IClrTypeDecorator> EnumerateTypes()
 		{
-			return _threadDispatcher.Process(() => ClrHeap.EnumerateTypes().Select(p => new ClrTypeDecorator(this, _threadDispatcher, p))).Dispatch(_threadDispatcher);
+			return _threadDispatcher.Process(() => _clrHeap.EnumerateTypes().Select(p => new ClrTypeDecorator(this, _threadDispatcher, p))).Dispatch(_threadDispatcher);
 		}
 	}
 }

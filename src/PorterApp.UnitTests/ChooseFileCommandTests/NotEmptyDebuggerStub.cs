@@ -13,7 +13,7 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 		private static readonly TypeHierarchy GetTypeHierarchy = new TypeHierarchy
 		{
 			Name = "test",
-			Elements = new[] {new TypeHierarchy()}
+			//Elements = new[] {new TypeHierarchy()}
 		};
 
 		public ArchitectureType ArchitectureType { get; private set; }
@@ -51,9 +51,9 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 		private sealed class ClrData : IClrData
 		{
 
-			public IEnumerable<ITypeNode> GetTypeHierarchy()
+			public ISingleThreadEnumerable<ITypeNode> GetTypeHierarchy()
 			{
-				yield return NotEmptyDebuggerStub.GetTypeHierarchy;
+				throw new System.NotImplementedException();
 			}
 
 			public Task<ITypeNode[]> GetTypeHierarchyAsync()
