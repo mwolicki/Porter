@@ -10,6 +10,6 @@
 			<TextBlock Text ="{Binding Name}" porterApp:TextBlockBehavior.OnDoubleClick ="{Binding ToRemoveOnlyForTest}" porterApp:TextBlockBehavior.OnDoubleClickParam ="{Binding .}" />
 		</HierarchicalDataTemplate>
 	</Window.Resources>
-	<porterApp:TreeView2 Margin="10,0,10,10"  ItemsSource="{Binding .}" ItemTemplate="{StaticResource ItemTemplate}"/>
+	<porterApp:CustomTreeView Margin="10,0,10,10"  ItemsSource="{Binding .}" ItemTemplate="{StaticResource ItemTemplate}"/>
     
 </dockingLibrary:DockableContent>

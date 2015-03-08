@@ -19,7 +19,7 @@ namespace PorterApp
 		}
 	}
 
-	internal class TreeView2 : TreeView
+	internal class CustomTreeView : TreeView
 	{
 		// HACK: Prevent docking library from setting item source to null value
 		protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)

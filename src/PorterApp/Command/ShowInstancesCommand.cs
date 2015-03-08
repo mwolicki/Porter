@@ -13,7 +13,7 @@ namespace PorterApp.Command
 			return true;
 		}
 
-		public async void Execute(object parameter)
+		public void Execute(object parameter)
 		{
 
 			var typeTreeItem = parameter as TypeTreeItem;
@@ -21,7 +21,7 @@ namespace PorterApp.Command
 			{
 				var treeItems = typeTreeItem.Instances.Take(200).Select(p => new TreeItem
 				{
-					Name = p().TypeObjectDescription.Name
+					Name = p().TypeObjectDescription.
 				}).ToArray();
 				WindowDispatcher.Show(new TypesTreeWindow(new ObservableCollection<TreeItem>(treeItems)));
 			}
