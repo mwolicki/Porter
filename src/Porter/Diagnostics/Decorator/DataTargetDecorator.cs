@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Diagnostics.Runtime;
@@ -8,11 +7,13 @@ namespace Porter.Diagnostics.Decorator
 {
 	internal class DataTargetDecorator : IDataTargetDecorator
 	{
+		private readonly string _fileName;
 		private readonly ThreadDispatcher _threadDispatcher = new ThreadDispatcher();
 		private readonly Task<DataTarget> _dataTarget;
 
 		private DataTargetDecorator(string fileName)
 		{
+			_fileName = fileName;
 			_dataTarget = _threadDispatcher.ProcessAsync(() => DataTarget.LoadCrashDump(fileName));
 		}
 

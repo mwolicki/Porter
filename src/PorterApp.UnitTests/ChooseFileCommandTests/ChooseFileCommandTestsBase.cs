@@ -1,5 +1,5 @@
-using Porter;
 using System;
+using Porter;
 using PorterApp.Command;
 
 namespace PorterApp.UnitTests.ChooseFileCommandTests

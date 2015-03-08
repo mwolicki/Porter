@@ -86,7 +86,7 @@ namespace Porter.Extensions
 				fieldValue = GetValueTypeValue(objRef, fieldRef, interior);
 			}
 
-			if (fieldRef.IsObjectAndNotString() && address != Null && fieldType.HasSimpleValue)
+			if (fieldRef.IsObjectAndNotString && address != Null && fieldType.HasSimpleValue)
 			{
 				fieldValue = GetBoxedValueTypeValue(fieldType, address);
 			}
@@ -97,7 +97,7 @@ namespace Porter.Extensions
 		{
 			IClrTypeDecorator fieldType = fieldRef.Type;
 
-			if (address != Null && fieldRef.IsObjectAndNotString())
+			if (address != Null && fieldRef.IsObjectAndNotString)
 			{
 				fieldType = type.Heap.GetObjectType(address);
 			}
@@ -107,7 +107,7 @@ namespace Porter.Extensions
 		private static ulong GetAddress(ulong objRef, ClrInstanceFieldDecorator fieldRef, bool interior)
 		{
 			var address = fieldRef.GetFieldAddress(objRef, interior);
-			if (fieldRef.IsObjectAndNotString())
+			if (fieldRef.IsObjectAndNotString)
 			{
 				address = (ulong)fieldRef.GetFieldValue(objRef);
 			}

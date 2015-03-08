@@ -19,10 +19,10 @@ namespace PorterApp.Command
 			var typeTreeItem = parameter as TypeTreeItem;
 			if (typeTreeItem != null)
 			{
-				var treeItems = typeTreeItem.Instances.ToArray().Select(p => new TreeItem
+				var treeItems = typeTreeItem.Instances.Take(200).Select(p => new TreeItem
 				{
 					Name = p().TypeObjectDescription.Name
-				});
+				}).ToArray();
 				WindowDispatcher.Show(new TypesTreeWindow(new ObservableCollection<TreeItem>(treeItems)));
 			}
 		}

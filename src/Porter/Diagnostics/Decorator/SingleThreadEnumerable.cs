@@ -1,8 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using Porter.Models;
 
 namespace Porter.Diagnostics.Decorator
 {
@@ -14,6 +13,18 @@ namespace Porter.Diagnostics.Decorator
 		}
 	}
 
+
+	public interface ISingleThreadEnumerable<T> : IEnumerable<T>
+	{
+		T[] ToArray();
+		IEnumerable<T2> Select<T2>(Func<T, T2> s);
+		IEnumerable<T> Take(int i);
+		//List<T> ToList();
+		//T Single();
+		//T SingleOrDefault();
+		//T First();
+		//T FirstOrDefault();
+	}
 
 	internal class SingleThreadEnumerable<T> : ISingleThreadEnumerable<T>
 	{
@@ -43,6 +54,16 @@ namespace Porter.Diagnostics.Decorator
 		public T[] ToArray()
 		{
 			return _threadDispatcher.Process(() => _enumerable.ToArray());
+		}
+
+		public IEnumerable<T2> Select<T2>(Func<T, T2> s)
+		{
+			return _enumerable.Select(s).Dispatch(_threadDispatcher);
+		}
+
+		public IEnumerable<T> Take(int i)
+		{
+			return _enumerable.Take(i).Dispatch(_threadDispatcher);
 		}
 	}
 }

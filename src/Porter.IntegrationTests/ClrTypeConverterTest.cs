@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Diagnostics.Runtime;
 using Microsoft.Diagnostics.Runtime.Fakes;
@@ -124,52 +125,52 @@ namespace Porter.IntegrationTests
 
 			public IClrHeapDecorator Heap
 			{
-				get { throw new System.NotImplementedException(); }
+				get { throw new NotImplementedException(); }
 			}
 
 			public bool IsPrimitive
 			{
-				get { throw new System.NotImplementedException(); }
+				get { throw new NotImplementedException(); }
 			}
 
 			public bool IsString
 			{
-				get { throw new System.NotImplementedException(); }
+				get { throw new NotImplementedException(); }
 			}
 
 			public IEnumerable<ClrMethodDecorator> Methods
 			{
-				get { throw new System.NotImplementedException(); }
+				get { throw new NotImplementedException(); }
 			}
 
 			public bool IsObjectReference
 			{
-				get { throw new System.NotImplementedException(); }
+				get { throw new NotImplementedException(); }
 			}
 
 			public IEnumerable<ClrInstanceFieldDecorator> Fields
 			{
-				get { throw new System.NotImplementedException(); }
+				get { throw new NotImplementedException(); }
 			}
 
 			public string Name
 			{
-				get { throw new System.NotImplementedException(); }
+				get { throw new NotImplementedException(); }
 			}
 
 			public bool HasSimpleValue
 			{
-				get { throw new System.NotImplementedException(); }
+				get { throw new NotImplementedException(); }
 			}
 
 			public ulong GetSize(ulong objRef)
 			{
-				throw new System.NotImplementedException();
+				throw new NotImplementedException();
 			}
 
 			public object GetValue(ulong address)
 			{
-				throw new System.NotImplementedException();
+				throw new NotImplementedException();
 			}
 		}
 

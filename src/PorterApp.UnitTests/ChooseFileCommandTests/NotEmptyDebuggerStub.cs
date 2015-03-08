@@ -1,7 +1,9 @@
-using Porter;
-using Porter.Models;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Porter;
+using Porter.Diagnostics.Decorator;
+using Porter.Models;
 using PorterApp.ViewModel;
 
 namespace PorterApp.UnitTests.ChooseFileCommandTests
@@ -31,12 +33,12 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 
 		public ArchitectureType Architecture
 		{
-			get { throw new System.NotImplementedException(); }
+			get { throw new NotImplementedException(); }
 		}
 
 		IEnumerable<IClrData> IExtendedDebugger.GetClrs()
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 
 		public IEnumerable<IClrData> GetClrs()
@@ -53,12 +55,12 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 
 			public ISingleThreadEnumerable<ITypeNode> GetTypeHierarchy()
 			{
-				throw new System.NotImplementedException();
+				throw new NotImplementedException();
 			}
 
 			public Task<ITypeNode[]> GetTypeHierarchyAsync()
 			{
-				throw new System.NotImplementedException();
+				throw new NotImplementedException();
 			}
 		}
 

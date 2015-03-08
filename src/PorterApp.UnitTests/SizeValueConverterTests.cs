@@ -1,10 +1,4 @@
-﻿using Porter;
-using System;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Threading;
+﻿using System.Globalization;
 using Xunit;
 
 namespace PorterApp.UnitTests

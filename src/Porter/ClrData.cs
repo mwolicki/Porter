@@ -25,35 +25,32 @@ namespace Porter
 		public IEnumerable<Func<IReferenceObject>> GetHeapObjects()
 		{
 			return from objRef in ClrHeap.EnumerateObjects()
-								  let type = ClrHeap.GetObjectType(objRef)
-								  select type.GetReferenceObjectFactory(objRef);
+				   let type = ClrHeap.GetObjectType(objRef)
+				   select type.GetReferenceObjectFactory(objRef);
 		}
 
-		public ISingleThreadEnumerable<ITypeNode> GetTypeHierarchy()
+		public IEnumerable<ITypeNode> GetTypeHierarchy()
 		{
-			return (from type in ClrHeap.EnumerateTypes()
-						let fullName = type.Name.Contains(".") ? type.Name : "(global namespace)." + type.Name
-						group type by fullName.GetSubNamespace(0)
-							into grp
-						select (ITypeNode)new TypeHierarchy { Name = grp.Key, Elements = GetTypeHierarchy(grp, 1).Dispatch(ClrHeap.Dispatcher) }).Dispatch(ClrHeap.Dispatcher);
+			return (from name in ClrHeap.GetTypeNames()
+					let fullName = name.Contains(".") ? name : "(global namespace)." + name
+					group name by fullName.GetSubNamespace(0)
+						into grp
+						select (ITypeNode)new TypeHierarchy { Name = grp.Key, Elements = GetTypeHierarchy(grp, 1) });
 		}
 
-		
-
-		private IEnumerable<ITypeNode> GetTypeHierarchy(IEnumerable<IClrTypeDecorator> clrTypes, uint level)
+		private IEnumerable<ITypeNode> GetTypeHierarchy(IEnumerable<string> names, uint level)
 		{
-			var nextLevelElements = new MultiElementDictionary<string, IClrTypeDecorator>();
-			foreach (IClrTypeDecorator clrType in clrTypes)
+			var nextLevelElements = new MultiElementDictionary<string, string>();
+			foreach (string name in names)
 			{
-				var type = clrType;
-				if (type.Name.IsLastSubNamespace(level) || type.Name.IsLastSubNamespace(0))
+				var type = name;
+				if (type.IsLastSubNamespace(level) || type.IsLastSubNamespace(0))
 				{
-
-					yield return new TypeLeaf { Name = type.Name, Instances = GetHeapObjects(type.Name).Dispatch(ClrHeap.Dispatcher) };
+					yield return new TypeLeaf { Name = name, Instances = GetHeapObjects(name) };
 				}
 				else
 				{
-					nextLevelElements.Add(type.Name.GetSubNamespace(level), type);
+					nextLevelElements.Add(name.GetSubNamespace(level), name);
 				}
 			}
 
@@ -63,17 +60,14 @@ namespace Porter
 			}
 		}
 
-		private IEnumerable<Func<IReferenceObject>> GetHeapObjects(string typeName)
+		private ISingleThreadEnumerable<Func<IReferenceObject>> GetHeapObjects(string typeName)
 		{
-			return from objRef in ClrHeap.EnumerateObjects()
-				let type = ClrHeap.GetObjectType(objRef)
-				where type.Name == typeName
-				select type.GetReferenceObjectFactory(objRef);
+			return ClrHeap.GetHeapObjects(typeName);
 		}
 
-		private TypeHierarchy GetTypeHierarchy(uint level, string name, IEnumerable<IClrTypeDecorator> groupedTypesByNamespaceCopy)
+		private TypeHierarchy GetTypeHierarchy(uint level, string name, LinkedList<string> groupedTypesByNamespaceCopy)
 		{
-			return new TypeHierarchy { Name = name, Elements = GetTypeHierarchy(groupedTypesByNamespaceCopy, level + 1).Dispatch(ClrHeap.Dispatcher) };
+			return new TypeHierarchy { Name = name, Elements = GetTypeHierarchy(groupedTypesByNamespaceCopy, level + 1) };
 		}
 	}
 

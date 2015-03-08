@@ -49,7 +49,19 @@ namespace Porter.Diagnostics.Decorator
 
 		public string Name
 		{
-			get { return _threadDispatcher.Process(() => _clrType.Name); }
+			get
+			{
+				if (_threadDispatcher.IsCurrentThread())
+				{
+					return _clrType.Name;
+				}
+				return GetNameUsingDifferentThread();
+			}
+		}
+
+		private string GetNameUsingDifferentThread()
+		{
+			return _threadDispatcher.Process(() => _clrType.Name);
 		}
 
 		public bool HasSimpleValue

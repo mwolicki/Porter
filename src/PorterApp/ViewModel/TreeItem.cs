@@ -9,7 +9,13 @@ namespace PorterApp.ViewModel
 
 		public ICollection<TreeItem> Children
 		{
-			get { return LazyChildren.Value; }
+			get
+			{
+				var lazy = LazyChildren;
+				if(lazy!=null)
+					return lazy.Value;
+				return null;
+			}
 		}
 
 		public Lazy<ICollection<TreeItem>> LazyChildren {private get; set; }

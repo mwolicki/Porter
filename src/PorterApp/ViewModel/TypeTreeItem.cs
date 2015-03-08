@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
+using Porter.Diagnostics.Decorator;
 using Porter.Models;
 using PorterApp.Command;
 
@@ -17,7 +17,7 @@ namespace PorterApp.ViewModel
 			get { return new ShowInstancesCommand(); }
 		}
 
-		public IEnumerable<Func<IReferenceObject>> Instances { get; set; }
+		public ISingleThreadEnumerable<Func<IReferenceObject>> Instances { get; set; }
 
 		private static readonly Lazy<ICollection<TreeItem>> CachedEmptyLazy = new Lazy<ICollection<TreeItem>>(() => new ObservableCollection<TreeItem>());
 

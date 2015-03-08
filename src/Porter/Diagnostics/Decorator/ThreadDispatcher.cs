@@ -11,10 +11,9 @@ namespace Porter.Diagnostics.Decorator
 		private sealed class ThreadSafeQueue
 		{
 			private readonly Queue<Tuple<Func<object>, TaskCompletionSource<object>>> _queue = new Queue<Tuple<Func<object>, TaskCompletionSource<object>>>();
-			private readonly object _lock = new object();
 			public void Enqueue(Func<object> func, TaskCompletionSource<object> tcs)
 			{
-				lock (_lock)
+				lock (_queue)
 				{
 					_queue.Enqueue(new Tuple<Func<object>, TaskCompletionSource<object>>(func, tcs));
 				}
@@ -22,7 +21,7 @@ namespace Porter.Diagnostics.Decorator
 
 			public Tuple<Func<object>, TaskCompletionSource<object>> Dequeue()
 			{
-				lock (_lock)
+				lock (_queue)
 				{
 					return _queue.Dequeue();
 				}
@@ -30,8 +29,7 @@ namespace Porter.Diagnostics.Decorator
 		}
 
 		private readonly Semaphore _semaphore = new Semaphore(0, Int32.MaxValue);
-
-		private ThreadSafeQueue _queue = new ThreadSafeQueue();
+		private readonly ThreadSafeQueue _queue = new ThreadSafeQueue();
 		private bool _loop = true;
 		private readonly Thread _thread;
 
@@ -40,7 +38,8 @@ namespace Porter.Diagnostics.Decorator
 			_thread = new Thread(Loop)
 			{
 				IsBackground = true,
-				Name = "Thread Dispatcher "+ Guid.NewGuid().ToString()
+				Name = "Thread Dispatcher "+ Guid.NewGuid().ToString(),
+				Priority = ThreadPriority.AboveNormal,
 			};
 			_thread.SetApartmentState(ApartmentState.STA);
 			_thread.Start();
@@ -48,18 +47,26 @@ namespace Porter.Diagnostics.Decorator
 
 		private void Loop()
 		{
-			while (_loop)
+			Thread.BeginThreadAffinity();
+			try
 			{
-				_semaphore.WaitOne();
-				var data = _queue.Dequeue();
-				try
+				while (_loop)
 				{
-					data.Item2.SetResult(data.Item1());
+					_semaphore.WaitOne();
+					var data = _queue.Dequeue();
+					try
+					{
+						data.Item2.SetResult(data.Item1());
+					}
+					catch (Exception e)
+					{
+						data.Item2.SetException(e);
+					}
 				}
-				catch (Exception e)
-				{
-					data.Item2.SetException(e);
-				}
+			}
+			finally
+			{
+				Thread.EndThreadAffinity();
 			}
 		}
 

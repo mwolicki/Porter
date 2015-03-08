@@ -1,3 +1,4 @@
+using System.IO;
 using Porter;
 
 namespace PorterApp.UnitTests.ChooseFileCommandTests
@@ -6,7 +7,7 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 	{
 		public IExtendedDebugger Create(string dumpFilePath)
 		{
-			throw new System.IO.FileNotFoundException();
+			throw new FileNotFoundException();
 		}
 	}
 }

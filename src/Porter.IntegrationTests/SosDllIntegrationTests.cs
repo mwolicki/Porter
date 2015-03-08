@@ -1,10 +1,9 @@
-﻿using Porter.Models;
+﻿using System.IO;
+using System.Linq;
 using Porter.Extensions;
+using Porter.Models;
 using SharpCompress.Archive;
 using SharpCompress.Common;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using Xunit;
 using Xunit.Extensions;
 

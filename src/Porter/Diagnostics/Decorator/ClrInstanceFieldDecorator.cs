@@ -6,37 +6,28 @@ namespace Porter.Diagnostics.Decorator
 	{
 		private readonly ClrInstanceField _clrInstanceField;
 		private readonly ThreadDispatcher _threadDispatcher;
-		private readonly IClrHeapDecorator _heap;
 
 		public ClrInstanceFieldDecorator(ClrInstanceField clrInstanceField, ThreadDispatcher threadDispatcher, IClrHeapDecorator heap)
 		{
 			_clrInstanceField = clrInstanceField;
 			_threadDispatcher = threadDispatcher;
-			_heap = heap;
+
+			_threadDispatcher.Process(() =>
+			{
+				Name = _clrInstanceField.Name;
+				HasSimpleValue = _clrInstanceField.HasSimpleValue;
+				Type = new ClrTypeDecorator(heap, _threadDispatcher, _clrInstanceField.Type);
+				IsObjectAndNotString = _clrInstanceField.IsObjectReference() &&_clrInstanceField.ElementType != ClrElementType.String;
+			});
 		}
 
-		public string Name
-		{
-			get { return _threadDispatcher.Process(() => _clrInstanceField.Name); }
-		}
+		public string Name { get; private set; }
 
-		public bool HasSimpleValue
-		{
-			get { return _threadDispatcher.Process(() => _clrInstanceField.HasSimpleValue); }
-		}
+		public bool HasSimpleValue { get; set; }
 
-		public IClrTypeDecorator Type
-		{
-			get { return _threadDispatcher.Process(() => new ClrTypeDecorator(_heap, _threadDispatcher, _clrInstanceField.Type)); }
-		}
+		public IClrTypeDecorator Type { get; set; }
 
-
-		public bool IsObjectAndNotString()
-		{
-			return
-				_threadDispatcher.Process(
-					() => _clrInstanceField.IsObjectReference() && _clrInstanceField.ElementType != ClrElementType.String);
-		}
+		public bool IsObjectAndNotString { get; private set; }
 
 		public object GetFieldValue(ulong objRef, bool interior)
 		{
