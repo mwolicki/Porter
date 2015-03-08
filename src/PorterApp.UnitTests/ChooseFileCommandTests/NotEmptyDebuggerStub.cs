@@ -53,7 +53,7 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 		private sealed class ClrData : IClrData
 		{
 
-			public ISingleThreadEnumerable<ITypeNode> GetTypeHierarchy()
+			public IEnumerable<ITypeNode> GetTypeHierarchy()
 			{
 				throw new NotImplementedException();
 			}

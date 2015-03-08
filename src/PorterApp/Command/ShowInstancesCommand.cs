@@ -21,7 +21,7 @@ namespace PorterApp.Command
 			{
 				var treeItems = typeTreeItem.Instances.Take(200).Select(p => new TreeItem
 				{
-					Name = p().TypeObjectDescription.
+					Name = p().TypeObjectDescription.Name
 				}).ToArray();
 				WindowDispatcher.Show(new TypesTreeWindow(new ObservableCollection<TreeItem>(treeItems)));
 			}
