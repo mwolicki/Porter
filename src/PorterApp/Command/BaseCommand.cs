@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Windows.Input;
 
 namespace PorterApp.Command
 {
-	public abstract class BaseCommand<T> : ICommand where T:class
+	public abstract class BaseCommand<T> : ICommand<T> where T:class
 	{
 		public bool CanExecute(object parameter)
 		{

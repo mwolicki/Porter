@@ -1,14 +1,15 @@
-﻿using PorterApp.ViewModel;
+﻿using Porter.Models;
+using PorterApp.ViewModel;
 
 namespace PorterApp.Command
 {
-	internal sealed class OpenObjectViewCommand : BaseCommand<MainViewModel>
+	internal sealed class OpenObjectViewCommand : BaseCommand<IReferenceObject>
 	{
-		public override void Execute(MainViewModel parameter)
+		public override void Execute(IReferenceObject parameter)
 		{
 			var objectDetails = new ObjectDetails
 			{
-				DataContext = new ObjectDetailsViewModel((parameter).SelectedObject.ReferenceObject)
+				DataContext = new ObjectDetailsViewModel(parameter)
 			};
 			objectDetails.Show();
 		}

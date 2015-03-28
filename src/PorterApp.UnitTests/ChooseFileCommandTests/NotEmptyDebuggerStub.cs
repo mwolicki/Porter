@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Porter;
 using Porter.Diagnostics.Decorator;
 using Porter.Models;
+using PorterApp.UserControls;
 using PorterApp.ViewModel;
 
 namespace PorterApp.UnitTests.ChooseFileCommandTests
@@ -20,7 +21,7 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 
 		public ArchitectureType ArchitectureType { get; private set; }
 
-		internal static IEnumerable<TreeItem> ExpectedObjectViewModels
+		internal static IEnumerable<ITreeItem> ExpectedObjectViewModels
 		{
 			get
 			{

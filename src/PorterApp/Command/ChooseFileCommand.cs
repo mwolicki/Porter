@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Porter;
 using Porter.Models;
+using PorterApp.UserControls;
 using PorterApp.ViewModel;
 
 namespace PorterApp.Command
@@ -42,15 +43,16 @@ namespace PorterApp.Command
 		{
 			try
 			{
-				var treeItems = new ObservableCollection<TreeItem>();
+				var treeItems = new ObservableCollection<ITreeItem>();
 				await Task.Run(() =>
 				{
 					foreach (var typeNode in SelectMany(fileName))
 					{
+						
 						treeItems.Add(new TypeTreeItem(typeNode));
 					}
 				});
-				WindowDispatcher.Show(new TypesTreeWindow(treeItems));
+				WindowDispatcher.Show(new TypesTreeWindow(new TreeViewModel{TreeItems = treeItems}));
 			}
 			catch (FileNotFoundException)
 			{

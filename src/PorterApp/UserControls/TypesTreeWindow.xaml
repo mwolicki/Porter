@@ -1,0 +1,13 @@
+﻿<dockingLibrary:DockableContent x:Class="PorterApp.UserControls.TypesTreeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dockingLibrary="clr-namespace:DockingLibrary;assembly=DockingLibrary"
+        xmlns:userControls="clr-namespace:PorterApp.UserControls"
+        Title="{Binding Title}" Height="300" Width="300">
+	<Window.Resources>
+		<HierarchicalDataTemplate x:Key="ItemTemplate" DataType="userControls:ITreeItem" ItemsSource="{Binding Path=Children}">
+			<TextBlock Text ="{Binding Name}" userControls:TextBlockBehavior.OnDoubleClick ="{Binding ItemDoubleClick}" userControls:TextBlockBehavior.OnDoubleClickParam ="{Binding .}" />
+		</HierarchicalDataTemplate>
+	</Window.Resources>
+	<userControls:CustomTreeView Margin="10,0,10,10" ItemsSource="{Binding TreeItems}" ItemTemplate="{StaticResource ItemTemplate}" />
+</dockingLibrary:DockableContent>

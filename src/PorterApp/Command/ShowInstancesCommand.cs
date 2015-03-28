@@ -2,31 +2,20 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using PorterApp.UserControls;
 using PorterApp.ViewModel;
 
 namespace PorterApp.Command
 {
-	public class ShowInstancesCommand : ICommand
+	public class ShowInstancesCommand : BaseCommand<TypeTreeItem>
 	{
-		public bool CanExecute(object parameter)
+		public override void Execute(TypeTreeItem typeTreeItem)
 		{
-			return true;
-		}
-
-		public void Execute(object parameter)
-		{
-
-			var typeTreeItem = parameter as TypeTreeItem;
-			if (typeTreeItem != null)
+			var treeItems = typeTreeItem.Instances.Take(200).Select(p => new ReferenceObjectTreeItem
 			{
-				var treeItems = typeTreeItem.Instances.Take(200).Select(p => new TreeItem
-				{
-					Name = p().TypeObjectDescription.Name
-				}).ToArray();
-				WindowDispatcher.Show(new TypesTreeWindow(new ObservableCollection<TreeItem>(treeItems)));
-			}
+				Name = p().TypeObjectDescription.Name
+			}).ToArray();
+			WindowDispatcher.Show(new TypesTreeWindow(new TreeViewModel { TreeItems = new ObservableCollection<ITreeItem>(treeItems) }));
 		}
-
-		public event EventHandler CanExecuteChanged;
 	}
 }

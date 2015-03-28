@@ -102,6 +102,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Command\BaseCommand.cs" />
+    <Compile Include="Command\ICommand.cs" />
     <Compile Include="Command\ShowInstancesCommand.cs" />
     <Compile Include="Extensions\ObservableCollectionExtensions.cs" />
     <Compile Include="IDumpFileNotFoundAlert.cs" />
@@ -112,12 +113,13 @@
     <Compile Include="OpenDumpFileDialog.cs" />
     <Compile Include="SizeValueConverter.cs" />
     <Compile Include="Command\OpenObjectViewCommand.cs" />
-    <Compile Include="TypesTreeWindow.xaml.cs">
+    <Compile Include="UserControls\ITreeViewModel.cs" />
+    <Compile Include="UserControls\TypesTreeWindow.xaml.cs">
       <DependentUpon>TypesTreeWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\ITypesTreeViewModel.cs" />
     <Compile Include="ViewModel\ReferenceObjectTreeItem.cs" />
-    <Compile Include="ViewModel\TreeItem.cs" />
+    <Compile Include="UserControls\TreeItem.cs" />
     <Compile Include="ViewModel\TypeTreeItem.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -137,7 +139,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TypesTreeWindow.xaml">
+    <Page Include="UserControls\TypesTreeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

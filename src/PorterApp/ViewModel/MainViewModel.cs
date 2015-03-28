@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Input;
 using PorterApp.Command;
+using PorterApp.UserControls;
 
 namespace PorterApp.ViewModel
 {
@@ -12,9 +13,9 @@ namespace PorterApp.ViewModel
 			get { return new ChooseFileCommand(); }
 		}
 
-		private ObservableCollection<ObservableCollection<TreeItem>> _objects = new ObservableCollection<ObservableCollection<TreeItem>> {new ObservableCollection<TreeItem>()};
+		private ObservableCollection<ObservableCollection<ITreeItem>> _objects = new ObservableCollection<ObservableCollection<ITreeItem>> {new ObservableCollection<ITreeItem>()};
 
-		public ObservableCollection<ObservableCollection<TreeItem>> TypesTree
+		public ObservableCollection<ObservableCollection<ITreeItem>> TypesTree
 		{
 			get { return _objects; }
 			set

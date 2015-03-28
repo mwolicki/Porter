@@ -1,20 +1,18 @@
 ﻿using System.Collections;
-using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using PorterApp.ViewModel;
 
-namespace PorterApp
+namespace PorterApp.UserControls
 {
 	/// <summary>
 	/// Interaction logic for TypesTreeWindow.xaml
 	/// </summary>
 	public partial class TypesTreeWindow
 	{
-		public TypesTreeWindow(ObservableCollection<TreeItem> items)
+		public TypesTreeWindow(ITreeViewModel viewModel)
 		{
-			DataContext = items;
+			DataContext = viewModel;
 			InitializeComponent();
 		}
 	}

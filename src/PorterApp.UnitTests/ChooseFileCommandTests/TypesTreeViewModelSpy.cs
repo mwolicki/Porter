@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using PorterApp.UserControls;
 using PorterApp.ViewModel;
 
 namespace PorterApp.UnitTests.ChooseFileCommandTests
@@ -7,9 +8,9 @@ namespace PorterApp.UnitTests.ChooseFileCommandTests
 	{
 		public TypesTreeViewModelSpy()
 		{
-			TypesTree = new ObservableCollection<ObservableCollection<TreeItem>>();
+			TypesTree = new ObservableCollection<ObservableCollection<ITreeItem>>();
 		}
 
-		public ObservableCollection<ObservableCollection<TreeItem>> TypesTree { get; set; }
+		public ObservableCollection<ObservableCollection<ITreeItem>> TypesTree { get; set; }
 	}
 }

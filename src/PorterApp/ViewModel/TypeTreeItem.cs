@@ -6,10 +6,11 @@ using System.Windows.Input;
 using Porter.Diagnostics.Decorator;
 using Porter.Models;
 using PorterApp.Command;
+using PorterApp.UserControls;
 
 namespace PorterApp.ViewModel
 {
-	public sealed class TypeTreeItem : TreeItem
+	public sealed class TypeTreeItem : TreeItem<TypeTreeItem>
 	{
 
 		public ICommand ToRemoveOnlyForTest
@@ -19,11 +20,12 @@ namespace PorterApp.ViewModel
 
 		public ISingleThreadEnumerable<Func<IReferenceObject>> Instances { get; set; }
 
-		private static readonly Lazy<ICollection<TreeItem>> CachedEmptyLazy = new Lazy<ICollection<TreeItem>>(() => new ObservableCollection<TreeItem>());
-
+		private static readonly Lazy<ICollection<ITreeItem>> CachedEmptyLazy = new Lazy<ICollection<ITreeItem>>(() => new ObservableCollection<ITreeItem>());
+		private static readonly ICommand ShowInstancesCommand = new ShowInstancesCommand();
 		public TypeTreeItem(ITypeNode typeNode)
 		{
 			Name = typeNode.Name;
+			ItemDoubleClick = ShowInstancesCommand;
 			var typeLeaf = typeNode as TypeLeaf;
 			if (typeLeaf != null)
 			{
@@ -31,15 +33,15 @@ namespace PorterApp.ViewModel
 			}
 			var typeHierarchy = typeNode as TypeHierarchy;
 			LazyChildren = typeHierarchy != null
-				? new Lazy<ICollection<TreeItem>>(() => GetChildrenTreeItems(typeHierarchy))
+				? new Lazy<ICollection<ITreeItem>>(() => GetChildrenTreeItems(typeHierarchy))
 				: CachedEmptyLazy;
 		}
 
-		private static ObservableCollection<TreeItem> GetChildrenTreeItems(TypeHierarchy typeHierarchy)
+		private static ObservableCollection<ITreeItem> GetChildrenTreeItems(TypeHierarchy typeHierarchy)
 		{
 			var typeTreeItems = typeHierarchy.Elements.ToArray().Select(e => new TypeTreeItem(e));
 
-			return new ObservableCollection<TreeItem>(typeTreeItems);
+			return new ObservableCollection<ITreeItem>(typeTreeItems);
 		}
 
 		public ICommand OpenObjectViewCommand
